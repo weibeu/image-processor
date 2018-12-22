@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/deepakraj-tc/image-processor/issues"
   },
-  "homepage": "https://github.com/deepakraj-tc/image-processor#readme"
+  "homepage": "https://github.com/deepakraj-tc/image-processor#readme",
+  "dependencies": {
+	"express": "^4.16.4",
+  	"canvas": "^2.2.0"
+  }
+
 }
