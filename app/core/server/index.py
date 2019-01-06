@@ -7,7 +7,7 @@ from .api.resources import RandomEmote
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(RandomEmote, '/random_emote')
+api.add_resource(RandomEmote, '/random_emote/')
 
 
 @app.route('/')
