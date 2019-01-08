@@ -8,7 +8,7 @@ from .models import Meme
 class RIPMeme(Meme):
 
     BASE_MEME_PATH = "app/core/image/templates/misc/rip.png"
-    TEXT_XY = (100, 420)
+    TEXT_XY = (100, 450)
     AVATAR_BOX = (150, 300, 278, 428)
 
     FONT_PATH = Meme.FONT_PATH + "OleoScript-Bold.ttf"
