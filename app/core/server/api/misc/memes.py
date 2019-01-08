@@ -1,3 +1,6 @@
+from io import BytesIO
+
+import requests
 from flask import send_file
 from flask_restful import Resource
 
@@ -10,8 +13,10 @@ class RIPMeme(Resource):
     FLASK_BASE_NAME = "static/image/cache/PIL/meme.png"
     BASE_NAME = "app/core/server/" + FLASK_BASE_NAME
 
-    def get(self, text):
-        meme = ImageProcessor().memes.rip.meme(text)
+    def get(self, text, avatar_url):
+        response = requests.get(avatar_url)
+        avatar_bytes = BytesIO(response.content)
+        meme = ImageProcessor().memes.rip.meme(text, avatar_bytes)
         meme.save(self.BASE_NAME)
         return send_file(
             self.FLASK_BASE_NAME,

@@ -1,3 +1,5 @@
+from io import BytesIO
+
 from PIL import Image, ImageDraw, ImageFont
 
 from .models import Meme
@@ -6,7 +8,8 @@ from .models import Meme
 class RIPMeme(Meme):
 
     BASE_MEME_PATH = "app/core/image/templates/misc/rip.png"
-    TEXT_XY = (110, 333)
+    TEXT_XY = (100, 430)
+    AVATAR_BOX = (150, 300, 278, 428)
 
     FONT_PATH = Meme.FONT_PATH + "OleoScript-Bold.ttf"
 
@@ -18,9 +21,14 @@ class RIPMeme(Meme):
         self.font = ImageFont.truetype(self.FONT_PATH, 50)
 
     def _process(self):
+        if self.avatar is not None:
+            self.avatar = Image.open(self.avatar)
+            self.avatar.resize((200, 200))
+            self.base_meme.paste(self.avatar, self.AVATAR_BOX)
+
         self.drawer.text(self.TEXT_XY, self.text, fill=(0, 0, 0), font=self.font)
 
-    def meme(self, text, avatar: Image = None) -> Image:
+    def meme(self, text, avatar: BytesIO = None) -> Image:
         self.text = text
         self.avatar = avatar
         self._process()
