@@ -8,8 +8,10 @@ from .models import Meme
 class RIPMeme(Meme):
 
     BASE_MEME_PATH = "app/core/image/templates/misc/rip.png"
-    TEXT_XY = (100, 450)
-    AVATAR_BOX = (150, 300, 278, 428)
+    FONT_SIZE = 47
+
+    AVATAR_PADDING = (10, 70)    # (LEFT, TOP)
+    TEXT_PADDING = (10, 100)    # (LEFT, BOTTOM)
 
     FONT_PATH = Meme.FONT_PATH + "OleoScript-Bold.ttf"
 
@@ -18,15 +20,22 @@ class RIPMeme(Meme):
         self.text = str()
         self.avatar = None
         self.drawer = ImageDraw.Draw(self.base_meme)
-        self.font = ImageFont.truetype(self.FONT_PATH, 50)
+        self.font = ImageFont.truetype(self.FONT_PATH, self.FONT_SIZE)
 
     def _process(self):
         if self.avatar is not None:
             self.avatar = Image.open(self.avatar)
             self.avatar.resize((200, 200))
-            self.base_meme.paste(self.avatar, self.AVATAR_BOX)
+            avatar_x = int((self.base_meme.size[0]-self.avatar.size[0])/2)-self.AVATAR_PADDING[0]
+            avatar_y = self.AVATAR_PADDING[1]+int((self.base_meme.size[1]-self.avatar.size[1])/2)
+            avatar_xy = (avatar_x, avatar_y, self.avatar.size[0]+avatar_x, self.avatar.size[1]+avatar_y)
+            self.base_meme.paste(self.avatar, avatar_xy)
 
-        self.drawer.text(self.TEXT_XY, self.text, fill=(0, 0, 0), font=self.font)
+        text_width, text_height = self.drawer.textsize(self.text, self.font)
+        text_x = (self.base_meme.size[0]-(text_width+self.TEXT_PADDING[0]))/2
+        text_y = self.base_meme.size[1]-(text_height+self.TEXT_PADDING[1])
+        text_xy = (text_x, text_y)
+        self.drawer.text(text_xy, self.text, fill=(0, 0, 0), font=self.font)
 
     def meme(self, text, avatar: BytesIO = None) -> Image:
         self.text = text
