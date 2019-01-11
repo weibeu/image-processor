@@ -12,7 +12,7 @@ class RIPMeme(Resource):
 
     MEME_NAME = "rip.png"
 
-    def get(self):
+    def post(self):
         payload = request.get_json()
         if payload is None:    # Browser or something.
             abort(400)
