@@ -1,6 +1,8 @@
 from io import BytesIO
+from typing import Union
 
 from PIL import Image, ImageDraw, ImageFont
+from typing.io import BinaryIO
 
 from .models import Meme
 
@@ -8,6 +10,8 @@ from .models import Meme
 class RIPMeme(Meme):
 
     BASE_MEME_PATH = "app/core/image/templates/misc/rip.png"
+
+    AVATAR_SIZE = (128, 128)
     FONT_SIZE = 47
 
     AVATAR_PADDING = (10, 70)    # (LEFT, TOP)
@@ -24,8 +28,7 @@ class RIPMeme(Meme):
 
     def _process(self):
         if self.avatar is not None:
-            self.avatar = Image.open(self.avatar)
-            self.avatar.resize((200, 200))
+            self.avatar = Image.open(self.avatar).resize(self.AVATAR_SIZE)
             avatar_x = int((self.base_meme.size[0]-self.avatar.size[0])/2)-self.AVATAR_PADDING[0]
             avatar_y = self.AVATAR_PADDING[1]+int((self.base_meme.size[1]-self.avatar.size[1])/2)
             avatar_xy = (avatar_x, avatar_y, self.avatar.size[0]+avatar_x, self.avatar.size[1]+avatar_y)
@@ -37,7 +40,7 @@ class RIPMeme(Meme):
         text_xy = (text_x, text_y)
         self.drawer.text(text_xy, self.text, fill=(0, 0, 0), font=self.font)
 
-    def meme(self, text, avatar: BytesIO = None) -> Image:
+    def meme(self, text, avatar: Union[BytesIO, BinaryIO] = None) -> Image:
         self.text = text
         self.avatar = avatar
         self._process()

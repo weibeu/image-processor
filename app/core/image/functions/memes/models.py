@@ -21,4 +21,4 @@ class Meme(ABC):
         raise NotImplementedError
 
     def get_base_meme(self) -> Image:
-        return Image.open(self.BASE_MEME_PATH, mode="r")
+        return Image.open(self.BASE_MEME_PATH)
