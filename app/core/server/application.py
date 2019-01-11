@@ -7,4 +7,4 @@ from .api.resources.image_processor.memes import RIPMeme
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(RIPMeme, '/rip_meme/<string:text>/<path:avatar_url>/')
+api.add_resource(RIPMeme, '/rip_meme/')
