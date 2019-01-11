@@ -2,4 +2,3 @@ requests
 flask
 flask_restful
 pillow
-guniorn
