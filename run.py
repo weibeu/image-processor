@@ -1,4 +1,4 @@
-from app.core.server.index import app
+from app.core.server.application import app
 
 
 if __name__ == '__main__':
