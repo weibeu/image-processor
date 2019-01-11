@@ -22,7 +22,7 @@ class RIPMeme(Meme):
     def __init__(self):
         self.base_meme = self.get_base_meme()
         self.text = str()
-        self.avatar = None
+        self.avatar: Image.Image = None
         self.drawer = ImageDraw.Draw(self.base_meme)
         self.font = ImageFont.truetype(self.FONT_PATH, self.FONT_SIZE)
 
@@ -40,7 +40,7 @@ class RIPMeme(Meme):
         text_xy = (text_x, text_y)
         self.drawer.text(text_xy, self.text, fill=(0, 0, 0), font=self.font)
 
-    def meme(self, text, avatar: Union[BytesIO, BinaryIO] = None) -> Image:
+    def meme(self, text, avatar: Union[BytesIO, BinaryIO] = None) -> Image.Image:
         self.text = text
         self.avatar = avatar
         self._process()
