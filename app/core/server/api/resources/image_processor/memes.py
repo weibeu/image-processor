@@ -1,7 +1,4 @@
-import requests
-
-from io import BytesIO
-
+import flask_restful
 from flask import send_file, request, abort
 from flask_restful import Resource
 
@@ -9,6 +6,10 @@ from app.core.image.processor import ImageProcessor
 
 
 class RIPMeme(Resource):
+
+    ROUTES = (
+        "/memes/rip/",
+    )
 
     MEME_NAME = "rip.png"
 
@@ -27,3 +28,13 @@ class RIPMeme(Resource):
             mimetype="image/png",
             attachment_filename=self.MEME_NAME
         )
+
+
+resources = [
+    RIPMeme
+]
+
+
+def setup(api: flask_restful.Api):
+    for resource in resources:
+        api.add_resource(resource, *resource.ROUTES)
