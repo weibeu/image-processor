@@ -6,8 +6,6 @@ from PIL import Image
 
 class Meme(ImageFunction, ABC):
 
-    FONT_PATH = "app/core/image/templates/fonts/"
-
     @property
     @abstractmethod
     def BASE_MEME_PATH(self):
