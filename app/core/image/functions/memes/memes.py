@@ -1,7 +1,6 @@
 from io import BytesIO
 from typing import Union
 
-from PIL import Image, ImageDraw, ImageFont
 from typing.io import BinaryIO
 
 from .models import Meme
@@ -22,13 +21,13 @@ class RIPMeme(Meme):
     def __init__(self):
         self.base_meme = self.get_base_meme()
         self.text = str()
-        self.avatar: Image.Image = None
-        self.drawer = ImageDraw.Draw(self.base_meme)
-        self.font = ImageFont.truetype(self.FONT_PATH, self.FONT_SIZE)
+        self.avatar: Meme.Image.Image = None
+        self.drawer = Meme.ImageDraw.Draw(self.base_meme)
+        self.font = Meme.ImageFont.truetype(self.FONT_PATH, self.FONT_SIZE)
 
     def _process(self):
         if self.avatar is not None:
-            self.avatar = Image.open(self.avatar).resize(self.AVATAR_SIZE)
+            self.avatar = Meme.Image.open(self.avatar).resize(self.AVATAR_SIZE)
             avatar_x = int((self.base_meme.size[0]-self.avatar.size[0])/2)-self.AVATAR_PADDING[0]
             avatar_y = self.AVATAR_PADDING[1]+int((self.base_meme.size[1]-self.avatar.size[1])/2)
             avatar_xy = (avatar_x, avatar_y, self.avatar.size[0]+avatar_x, self.avatar.size[1]+avatar_y)
@@ -40,7 +39,7 @@ class RIPMeme(Meme):
         text_xy = (text_x, text_y)
         self.drawer.text(text_xy, self.text, fill=(0, 0, 0), font=self.font)
 
-    def meme(self, text, avatar: Union[BytesIO, BinaryIO] = None) -> Image.Image:
+    def meme(self, text, avatar: Union[BytesIO, BinaryIO] = None) -> Meme.Image.Image:
         self.text = text
         self.avatar = avatar
         self._process()
