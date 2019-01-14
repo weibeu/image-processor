@@ -1,19 +1,16 @@
 from abc import ABC, abstractmethod
 
+from ..models import ImageFunction
 from PIL import Image
 
 
-class Meme(ABC):
+class Meme(ImageFunction, ABC):
 
     FONT_PATH = "app/core/image/templates/fonts/"
 
     @property
     @abstractmethod
     def BASE_MEME_PATH(self):
-        raise NotImplementedError
-
-    @abstractmethod
-    def _process(self):
         raise NotImplementedError
 
     @abstractmethod
