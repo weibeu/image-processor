@@ -1,17 +1,14 @@
 from flask import Flask
 from flask_restful import Api
 
-from .api.resources.image_processor import memes
+from .api.resources.image_processor import image_resource_packages
 
 
 app = Flask(__name__)
 api = Api(app)
 
-resources_packages = [
-    memes
-]
 
-for resource_package in resources_packages:
+for resource_package in image_resource_packages:
     try:
         resource_package.setup(api)
     except AttributeError:
