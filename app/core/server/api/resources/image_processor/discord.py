@@ -28,11 +28,13 @@ class SSDiscordMessage(Resource):
     ]
 
     def post(self):
-        payload = request.get_json()
+        payload: dict = request.get_json()
         if payload is None:    # Browser or something.
             abort(400)
         if not all(key in payload for key in self.REQUIRED_DATA):
             abort(400)
+        if "name_color" in payload:
+            payload["name_color"] = tuple(payload.get("name_color"))
 
         ss_bytes = image.ss_discord_msg(**payload)
 
