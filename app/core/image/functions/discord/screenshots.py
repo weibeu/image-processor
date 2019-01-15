@@ -43,7 +43,8 @@ class DiscordMessageScreenShot(ScreensShot):
         self.name_font = ScreensShot.ImageFont.truetype(self.NAME_FONT_PATH, self.NAME_FONT_SIZE)
 
     def _process(self):
-        self.content = textwrap.wrap(self.content, self.CONTENT_WIDTH_SCALE)
+        self.content = textwrap.wrap(self.content, self.CONTENT_WIDTH_SCALE, replace_whitespace=False)
+        print(self.content)
         self.avatar = ScreensShot.Image.open(self.avatar)
         avatar_mask = ScreensShot.Image.new("L", self.avatar.size, 0)
         avatar_drawer = ScreensShot.ImageDraw.Draw(avatar_mask)
@@ -54,11 +55,11 @@ class DiscordMessageScreenShot(ScreensShot):
         self.avatar.putalpha(avatar_mask)
         self.avatar = self.avatar.resize(self.AVATAR_SIZE)
 
-        discord_base_size = (self.DISCORD_WIDTH_SCALE+self.BASE_PADDING[0]+self.BASE_PADDING[3], (self.FONT_PADDING[3]*len(self.content))+self.BASE_PADDING[1]+self.BASE_PADDING[3]+50)
+        discord_base_size = (self.DISCORD_WIDTH_SCALE+self.BASE_PADDING[0]+self.BASE_PADDING[3], ((self.FONT_PADDING[3]+70)*len(self.content))+self.BASE_PADDING[1]+self.BASE_PADDING[3])
         self.discord_base = ScreensShot.Image.new("RGB", discord_base_size, self.DISCORD_BASE_COLOR)
         if len(self.content) == 1:
             l, t, r, b = self.discord_base.getbbox()
-            self.discord_base = self.discord_base.crop((l, t+20, r, b-20))
+            self.discord_base = self.discord_base.crop((l, t+30, r, b-30))
             self.NAME_BOX_Y = int((self.discord_base.size[1]-self.avatar.size[1])/2)
             avatar_xy = (self.BASE_PADDING[0], self.NAME_BOX_Y)
         else:
@@ -82,6 +83,10 @@ class DiscordMessageScreenShot(ScreensShot):
             w, h = drawer.textsize(line, font=self.font)
             drawer.text((content_xy[0], content_y), line, font=self.font)
             content_y += h + padding
+        if len(self.content) != 1:
+            l, t, r, b = self.discord_base.getbbox()
+            b -= 20
+            self.discord_base = self.discord_base.crop((l, t, r, b))
 
     def ss(self,
            name: str,
