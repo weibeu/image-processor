@@ -3,7 +3,7 @@ import unittest
 from PIL import Image
 
 from typing import Union
-from app.core.image.functions.screenshots.discord import DiscordMessageScreenShot
+from app.core.image.functions.discord.screenshots import DiscordMessageScreenShot
 
 
 class MessageScreenshotsTest(unittest.TestCase):
