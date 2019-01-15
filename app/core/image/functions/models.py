@@ -18,6 +18,7 @@ class ProcessorABC(ABC):
     def image_from_url(url: str):
         response = requests.get(url)
         image_bytes = BytesIO(response.content)
+        image_bytes.seek(0)
         return image_bytes
 
 
