@@ -31,7 +31,10 @@ class RIPMeme(Meme):
             avatar_x = int((self.base_meme.size[0]-self.avatar.size[0])/2)-self.AVATAR_PADDING[0]
             avatar_y = self.AVATAR_PADDING[1]+int((self.base_meme.size[1]-self.avatar.size[1])/2)
             avatar_xy = (avatar_x, avatar_y, self.avatar.size[0]+avatar_x, self.avatar.size[1]+avatar_y)
-            self.base_meme.paste(self.avatar, avatar_xy)
+            try:
+                self.base_meme.paste(self.avatar, avatar_xy, self.avatar)
+            except ValueError:
+                self.base_meme.paste(self.avatar, avatar_xy)
 
         text_width, text_height = self.drawer.textsize(self.text, self.font)
         text_x = (self.base_meme.size[0]-(text_width+self.TEXT_PADDING[0]))/2
