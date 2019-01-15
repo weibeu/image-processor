@@ -5,6 +5,9 @@ from flask_restful import Resource
 from app.core.image.processor import ImageProcessor
 
 
+image = ImageProcessor()
+
+
 class RIPMeme(Resource):
 
     ROUTES = (
@@ -21,7 +24,6 @@ class RIPMeme(Resource):
             abort(400)
         text = payload.get("text")
         avatar_url = payload.get("avatar_url")
-        image = ImageProcessor()
         meme_bytes = image.rip_meme(text, avatar_url)
         return send_file(
             meme_bytes,
