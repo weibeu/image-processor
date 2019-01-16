@@ -34,7 +34,13 @@ class SSDiscordMessage(Resource):
         if not all(key in payload for key in self.REQUIRED_DATA):
             abort(400)
         if "name_color" in payload:
-            payload["name_color"] = tuple(payload.get("name_color"))
+            try:
+                payload["name_color"] = tuple(payload.get("name_color"))
+            except TypeError:
+                payload.pop("name_color")
+
+        if "time_stamp" in payload and payload["time_stamp"] is None:
+            payload.pop("time_stamp")
 
         ss_bytes = image.ss_discord_msg(**payload)
 

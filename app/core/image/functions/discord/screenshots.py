@@ -44,11 +44,10 @@ class DiscordMessageScreenShot(ScreensShot):
 
     def _process(self):
         self.content = textwrap.wrap(self.content, self.CONTENT_WIDTH_SCALE, replace_whitespace=False)
-        print(self.content)
         self.avatar = ScreensShot.Image.open(self.avatar)
-        avatar_mask = ScreensShot.Image.new("L", self.avatar.size, 0)
+        avatar_mask = ScreensShot.Image.new("L", self.avatar.size)
         avatar_drawer = ScreensShot.ImageDraw.Draw(avatar_mask)
-        avatar_drawer.ellipse((0, 0) + self.avatar.size, fill=255)
+        avatar_drawer.ellipse((0, 0) + self.avatar.size, fill=225)
         self.avatar.putalpha(avatar_mask)
 
         self.avatar: ScreensShot.Image.Image = ImageOps.fit(self.avatar, avatar_mask.size)
