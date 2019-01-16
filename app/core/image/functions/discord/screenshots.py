@@ -54,7 +54,9 @@ class DiscordMessageScreenShot(ScreensShot):
         self.avatar.putalpha(avatar_mask)
         self.avatar = self.avatar.resize(self.AVATAR_SIZE)
 
-        discord_base_size = (self.DISCORD_WIDTH_SCALE+self.BASE_PADDING[0]+self.BASE_PADDING[3], ((self.FONT_PADDING[3]+70)*len(self.content))+self.BASE_PADDING[1]+self.BASE_PADDING[3])
+        discord_base_x = self.DISCORD_WIDTH_SCALE+self.BASE_PADDING[0]+self.BASE_PADDING[3]
+        discord_base_y = ((self.FONT_PADDING[3]+70)*len(self.content))+self.BASE_PADDING[1]+self.BASE_PADDING[3]
+        discord_base_size = (discord_base_x, discord_base_y)
         self.discord_base = ScreensShot.Image.new("RGB", discord_base_size, self.DISCORD_BASE_COLOR)
         if len(self.content) == 1:
             l, t, r, b = self.discord_base.getbbox()
