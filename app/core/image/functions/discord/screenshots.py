@@ -12,7 +12,7 @@ class DiscordMessageScreenShot(ScreensShot):
     DISCORD_BASE_COLOR = (54, 57, 62)
 
     FONT_SIZE = 15
-    FONT_PADDING = (20, 0, 0, 3)
+    FONT_PADDING = (20, 0, 30, 3)
     FONT_PATH = ScreensShot.FONT_PATH + "whitney_discord.ttf"
 
     NAME_FONT_SIZE = 16
@@ -25,7 +25,7 @@ class DiscordMessageScreenShot(ScreensShot):
     CONTENT_WIDTH_SCALE = 100
 
     DISCORD_WIDTH_SCALE = 700
-    BASE_PADDING = (20, 20, 60, 60)    # (left, top, right, bottom)
+    BASE_PADDING = (20, 20, 60, 70)    # (left, top, right, bottom)
 
     AVATAR_SIZE = (40, 40)
 
@@ -54,8 +54,10 @@ class DiscordMessageScreenShot(ScreensShot):
         self.avatar.putalpha(avatar_mask)
         self.avatar = self.avatar.resize(self.AVATAR_SIZE)
 
-        discord_base_x = self.DISCORD_WIDTH_SCALE+self.BASE_PADDING[0]+self.BASE_PADDING[3]
-        discord_base_y = ((self.FONT_PADDING[3]+70)*len(self.content))+self.BASE_PADDING[1]+self.BASE_PADDING[3]
+        if len(self.content) <= 2:
+            self.FONT_PADDING = (20, 0, 50, 3)
+        discord_base_x = self.DISCORD_WIDTH_SCALE+self.BASE_PADDING[0]+self.BASE_PADDING[2]
+        discord_base_y = ((self.FONT_PADDING[2])*len(self.content))+self.BASE_PADDING[1]+self.BASE_PADDING[3]
         discord_base_size = (discord_base_x, discord_base_y)
         self.discord_base = ScreensShot.Image.new("RGB", discord_base_size, self.DISCORD_BASE_COLOR)
         if len(self.content) == 1:
