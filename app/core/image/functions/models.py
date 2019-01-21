@@ -10,7 +10,7 @@ class ProcessorABC(ABC):
     @staticmethod
     def get_image_bytes(image: Image.Image, image_format: str = "PNG"):
         image_bytes = BytesIO()
-        image.save(image_bytes, format=image_format, quality=7)
+        image.save(image_bytes, format=image_format, quality=10)
         image_bytes.seek(0)
         return image_bytes
 
