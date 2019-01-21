@@ -10,7 +10,7 @@ from app.core.image.processor import ImageProcessor
 class MemesTest(unittest.TestCase):
 
     TEST_TEXT = "Test Test Test"
-    TEST_IMAGE = open("tests/image_processing/images/test1.gif", "rb")
+    TEST_IMAGE = open("_tests/image_processing/images/test1.gif", "rb")
     TEST_AVATAR_URL = "https://cdn.discordapp.com/avatars/331793750273687553/a_c59ddca1e44a4acb72654999459c58e0.gif"
 
     def test_rip_meme(self):

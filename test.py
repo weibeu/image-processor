@@ -1,8 +1,8 @@
 import unittest
 from typing import Union
 
-from tests.image_processing.memes import MemesTest
-from tests.image_processing.discord import MessageScreenshotsTest
+from _tests.image_processing.memes import MemesTest
+from _tests.image_processing.discord import MessageScreenshotsTest
 
 
 if __name__ == "__main__":
