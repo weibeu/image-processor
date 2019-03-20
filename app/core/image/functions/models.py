@@ -31,5 +31,5 @@ class ImageFunction(ProcessorABC, ABC):
     FONT_PATH = "app/core/image/templates/fonts/"
 
     @abstractmethod
-    def _process(self):
+    def _process(self, *args, **kwargs):
         raise NotImplementedError
