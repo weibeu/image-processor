@@ -2,10 +2,10 @@ from io import BytesIO
 
 from app.core.image.functions.models import ProcessorABC
 from .functions.memes import MemesProcessor
-from .functions.discord import ScreenShotsProcessor
+from .functions.discord import ScreenShotsProcessor, WelcomeBannerProcessor
 
 
-class ImageProcessor(MemesProcessor, ScreenShotsProcessor, ProcessorABC):
+class ImageProcessor(MemesProcessor, ScreenShotsProcessor, WelcomeBannerProcessor, ProcessorABC):
 
     def __init__(self):
         super().__init__()
