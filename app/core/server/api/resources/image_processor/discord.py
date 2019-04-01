@@ -83,7 +83,8 @@ class DiscordWelcomeBanner(Resource):
 
 
 resources = [
-    SSDiscordMessage
+    SSDiscordMessage,
+    DiscordWelcomeBanner,
 ]
 
 
