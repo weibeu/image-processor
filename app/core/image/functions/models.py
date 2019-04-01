@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from io import BytesIO
 
 import requests
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
 class ProcessorABC(ABC):
@@ -20,6 +20,25 @@ class ProcessorABC(ABC):
         image_bytes = BytesIO(response.content)
         image_bytes.seek(0)
         return image_bytes
+
+    @staticmethod
+    def get_avatar_icon(avatar):
+        avatar_mask = Image.new("L", avatar.size)
+        avatar_drawer = ImageDraw.Draw(avatar_mask)
+        avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
+        avatar.putalpha(avatar_mask)
+        avatar = ImageOps.fit(avatar, avatar_mask.size)
+        avatar.putalpha(avatar_mask)
+        return avatar
+
+    @staticmethod
+    def add_avatar_border(avatar, thickness=3):
+        size = (thickness + avatar.size[0], thickness + avatar.size[1])
+        base = Image.new("RGBA", size)
+        draw = ImageDraw.Draw(base)
+        draw.ellipse((0, 0) + size, fill="white", outline="white")
+        base.paste(avatar, (0, 0))
+        return base
 
 
 class ImageFunction(ProcessorABC, ABC):
