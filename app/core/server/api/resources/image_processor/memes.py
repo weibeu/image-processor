@@ -24,7 +24,7 @@ class RIPMeme(Resource):
             abort(400)
         text = payload.get("text")
         avatar_url = payload.get("avatar_url")
-        meme_bytes = image.rip_meme(text, avatar_url)
+        meme_bytes, _ = image.rip_meme(text, avatar_url)
         return send_file(
             meme_bytes,
             mimetype="image/png",
