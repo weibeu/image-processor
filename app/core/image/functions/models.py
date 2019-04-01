@@ -8,11 +8,15 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 class ProcessorABC(ABC):
 
     @staticmethod
-    def get_image_bytes(image: Image.Image, image_format: str = "PNG"):
+    def get_image_bytes(image: Image.Image, image_format: str = "png"):
         image_bytes = BytesIO()
-        image.save(image_bytes, format=image_format)
+        if isinstance(image, list):
+            image[0].save(image_bytes, save_all=True, append_images=image[1:])
+            image_format = "gif"
+        else:
+            image.save(image_bytes, format=image_format.upper())
         image_bytes.seek(0)
-        return image_bytes
+        return image_bytes, image_format
 
     @staticmethod
     def image_from_url(url: str):
