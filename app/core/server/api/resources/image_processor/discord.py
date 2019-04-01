@@ -54,7 +54,7 @@ class SSDiscordMessage(Resource):
 class DiscordWelcomeBanner(Resource):
 
     ROUTES = (
-        "/discord/banners/welcome/"
+        "/discord/banners/welcome/",
     )
 
     REQUIRED_DATA = [
