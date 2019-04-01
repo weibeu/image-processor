@@ -4,6 +4,7 @@ from PIL import Image
 
 from typing import Union
 from app.core.image.functions.discord.screenshots import DiscordMessageScreenShot
+from app.core.image.functions.discord.banners import WelcomeBanner
 
 
 class MessageScreenshotsTest(unittest.TestCase):
@@ -22,3 +23,22 @@ class MessageScreenshotsTest(unittest.TestCase):
         i = d.discord_base
         i.show()
         self.assertIsInstance(i, Union[Image.Image])
+
+
+class BannerTest(unittest.TestCase):
+
+    BANNER = open("_tests/image_processing/images/banner.png", "rb")
+    AVATAR = open("_tests/image_processing/images/pfp.jpg", "rb")
+    NAME = "The Cosmos"
+    TEXT = "Welcome to Universe."
+
+    def test_welcome_banner(self):
+        processor = WelcomeBanner()
+        banner = processor._process(self.BANNER, self.AVATAR, self.NAME, self.TEXT)
+        if isinstance(banner, list):
+            banner[0].save("/home/thecosmos/Desktop/banner.gif", save_all=True, append_images=banner[1:])
+            self.assertIsInstance(banner[0], Union[Image.Image])
+        else:
+            banner.show()
+            banner.save("/home/thecosmos/Desktop/banner.png")
+            self.assertIsInstance(banner, Union[Image.Image])
