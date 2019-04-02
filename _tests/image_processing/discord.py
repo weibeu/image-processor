@@ -36,7 +36,8 @@ class BannerTest(unittest.TestCase):
         processor = WelcomeBanner()
         banner = processor._process(self.BANNER, self.AVATAR, self.NAME, self.TEXT)
         if isinstance(banner, list):
-            banner[0].save("/home/thecosmos/Desktop/banner.gif", save_all=True, append_images=banner[1:])
+            banner[0].show()
+            # banner[0].save("/home/thecosmos/Desktop/banner.gif", save_all=True, append_images=banner[1:])
             self.assertIsInstance(banner[0], Union[Image.Image])
         else:
             banner.show()
