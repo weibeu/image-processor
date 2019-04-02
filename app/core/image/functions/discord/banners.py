@@ -9,20 +9,29 @@ class WelcomeBanner(ImageFunction):
     AVATAR_PADDING = (0, 22, 0, 0)
 
     FONT_PATH = ImageFunction.FONT_PATH + "Bangers-Regular.ttf"
-    NAME_FONT_SIZE = 70
-    BANNER_NAME_RATIO = 1.537
+    NAME_FONT_SIZE_RATIO_XY = (15, 7)
+    BANNER_NAME_RATIO = 1.5    # .537
 
     TEXT_FONT_PATH = ImageFunction.FONT_PATH + "Philosopher-Regular.ttf"
-    TEXT_FONT_SIZE = 40
+    TEXT_FONT_SIZE_RATIO_XY = (30, 12)
     BANNER_TEXT_RATIO = 1.2
+
+    @staticmethod
+    def __get_relative_font_size(xy, ratio_xy):
+        x, y = xy
+        font_size_x = int(x / ratio_xy[0])
+        font_size_y = int(y / ratio_xy[1])
+        return min((font_size_x, font_size_y))
 
     def __write_text(self, base, name, text):
         draw = ImageFunction.ImageDraw.Draw(base)
-        name_font = ImageFunction.ImageFont.truetype(self.FONT_PATH, self.NAME_FONT_SIZE)
+        name_font_size = self.__get_relative_font_size(base.size, self.NAME_FONT_SIZE_RATIO_XY)
+        name_font = ImageFunction.ImageFont.truetype(self.FONT_PATH, name_font_size)
         name_width, _ = draw.textsize(name, font=name_font)
         name_xy = (int((base.size[0] - name_width) / 2), int(base.size[1]/self.BANNER_NAME_RATIO))
         draw.text(name_xy, name, (255, 255, 255), font=name_font)
-        text_font = ImageFunction.ImageFont.truetype(self.TEXT_FONT_PATH, self.TEXT_FONT_SIZE)
+        text_font_size = self.__get_relative_font_size(base.size, self.TEXT_FONT_SIZE_RATIO_XY)
+        text_font = ImageFunction.ImageFont.truetype(self.TEXT_FONT_PATH, text_font_size)
         text_width, _ = draw.textsize(text, font=text_font)
         text_xy = (int((base.size[0] - text_width) / 2), int(base.size[1]/self.BANNER_TEXT_RATIO))
         draw.text(text_xy, text, fill=(255, 255, 255), font=text_font)
