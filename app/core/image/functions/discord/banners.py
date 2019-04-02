@@ -5,22 +5,23 @@ from .models import ImageFunction
 
 class WelcomeBanner(ImageFunction):
 
-    BANNER_AVATAR_RATIO = 1.77
-    AVATAR_PADDING = (0, 22, 0, 0)
+    BANNER_AVATAR_RATIO = 2
+    AVATAR_RATIO_Y = 17
 
     FONT_PATH = ImageFunction.FONT_PATH + "Bangers-Regular.ttf"
-    NAME_FONT_SIZE_RATIO_XY = (15, 7)
-    BANNER_NAME_RATIO = 1.5    # .537
+    NAME_FONT_SIZE_RATIO_XY = (11.5, 5.3)
+    BANNER_NAME_RATIO = 1.68    # .537
 
     TEXT_FONT_PATH = ImageFunction.FONT_PATH + "Philosopher-Regular.ttf"
-    TEXT_FONT_SIZE_RATIO_XY = (30, 12)
-    BANNER_TEXT_RATIO = 1.2
+    TEXT_FONT_SIZE_RATIO_XY = (25, 10)
+    BANNER_TEXT_RATIO = 1.222
 
     @staticmethod
     def __get_relative_font_size(xy, ratio_xy):
         x, y = xy
         font_size_x = int(x / ratio_xy[0])
         font_size_y = int(y / ratio_xy[1])
+        # return font_size_y
         return min((font_size_x, font_size_y))
 
     def __write_text(self, base, name, text):
@@ -45,7 +46,7 @@ class WelcomeBanner(ImageFunction):
         # avatar = self.add_avatar_border(avatar)
         avatar = self.get_avatar_icon(avatar)
 
-        avatar_xy = ((x - avatar.size[0]) // 2, self.AVATAR_PADDING[1])
+        avatar_xy = ((x - avatar.size[0]) // 2, y // self.AVATAR_RATIO_Y)
         frames = [f.copy() for f in ImageSequence.Iterator(banner)]
 
         if len(frames) == 1:
