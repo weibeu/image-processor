@@ -21,7 +21,7 @@ class MessageScreenshotsTest(unittest.TestCase):
         d.time_stamp = "Today at 11:38 AM"
         d._process()
         i = d.discord_base
-        i.show()
+        # i.show()
         self.assertIsInstance(i, Union[Image.Image])
 
 
@@ -29,17 +29,18 @@ class BannerTest(unittest.TestCase):
 
     BANNER = open("_tests/image_processing/images/banner.png", "rb")
     AVATAR = open("_tests/image_processing/images/pfp.jpg", "rb")
-    NAME = "The Cosmos"
+    NAME = "The Cosmos#9806"
     TEXT = "Welcome to Universe."
 
     def test_welcome_banner(self):
         processor = WelcomeBanner()
         banner = processor._process(self.BANNER, self.AVATAR, self.NAME, self.TEXT)
         if isinstance(banner, list):
-            banner[0].show()
+            # banner[0].show()
+            # banner[0].save("/home/thecosmos/Desktop/banner.png")
             # banner[0].save("/home/thecosmos/Desktop/banner.gif", save_all=True, append_images=banner[1:])
             self.assertIsInstance(banner[0], Union[Image.Image])
         else:
-            banner.show()
-            banner.save("/home/thecosmos/Desktop/banner.png")
+            # banner.show()
+            # banner.save("/home/thecosmos/Desktop/banner.png")
             self.assertIsInstance(banner, Union[Image.Image])
