@@ -13,7 +13,7 @@ class WelcomeBanner(ImageFunction):
     BANNER_NAME_RATIO = 1.68    # .537
 
     TEXT_FONT_PATH = ImageFunction.FONT_PATH + "Philosopher-Regular.ttf"
-    TEXT_FONT_SIZE_RATIO_XY = (22, 9.8)
+    TEXT_FONT_SIZE_RATIO_XY = (25, 10)
     BANNER_TEXT_RATIO = 1.222
 
     @staticmethod

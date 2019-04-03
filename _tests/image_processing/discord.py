@@ -27,16 +27,16 @@ class MessageScreenshotsTest(unittest.TestCase):
 
 class BannerTest(unittest.TestCase):
 
-    BANNER = open("_tests/image_processing/images/banner.png", "rb")
+    BANNER = open("_tests/image_processing/images/banner.gif", "rb")
     AVATAR = open("_tests/image_processing/images/pfp.jpg", "rb")
     NAME = "The Cosmos#9806"
-    TEXT = "Welcome to Universe."
+    TEXT = "Welcome to The Anime Discord! Make New friends! Enjoy your stay!"
 
     def test_welcome_banner(self):
         processor = WelcomeBanner()
         banner = processor._process(self.BANNER, self.AVATAR, self.NAME, self.TEXT)
         if isinstance(banner, list):
-            # banner[0].show()
+            banner[0].show()
             # banner[0].save("/home/thecosmos/Desktop/banner.png")
             # banner[0].save("/home/thecosmos/Desktop/banner.gif", save_all=True, append_images=banner[1:])
             self.assertIsInstance(banner[0], Union[Image.Image])
