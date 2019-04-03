@@ -21,8 +21,8 @@ class WelcomeBanner(ImageFunction):
         x, y = xy
         font_size_x = int(x / ratio_xy[0])
         font_size_y = int(y / ratio_xy[1])
-        return font_size_y
-        # return min((font_size_x, font_size_y))
+        # return font_size_y
+        return min((font_size_x, font_size_y))
 
     def __write_text(self, base, name, text):
         draw = ImageFunction.ImageDraw.Draw(base)
