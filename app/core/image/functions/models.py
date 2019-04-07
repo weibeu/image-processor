@@ -19,11 +19,14 @@ class ProcessorABC(ABC):
         return image_bytes, image_format
 
     @staticmethod
-    def image_from_url(url: str):
-        response = requests.get(url)
-        image_bytes = BytesIO(response.content)
-        image_bytes.seek(0)
-        return image_bytes
+    def image_from_url(url: str, max_size=3145730):
+        response = requests.get(url, stream=True)
+        for chunk in response.iter_content(chunk_size=max_size):
+            if len(chunk) >= max_size:
+                raise OverflowError
+            image_bytes = BytesIO(chunk)
+            image_bytes.seek(0)
+            return image_bytes
 
     @staticmethod
     def get_avatar_icon(avatar):
