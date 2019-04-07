@@ -73,13 +73,16 @@ class DiscordWelcomeBanner(Resource):
         if not all(key in payload for key in self.REQUIRED_DATA):
             abort(400)
 
-        banner_bytes, _ = image.get_welcome_banner(**payload)
-
-        return send_file(
-            banner_bytes,
-            mimetype=f"image/{_}",
-            attachment_filename=f"{self.BASE_FILENAME}.{_}"
-        )
+        try:
+            banner_bytes, _ = image.get_welcome_banner(**payload)
+        except OverflowError:
+            abort(413)
+        else:
+            return send_file(
+                banner_bytes,
+                mimetype=f"image/{_}",
+                attachment_filename=f"{self.BASE_FILENAME}.{_}"
+            )
 
 
 resources = [
