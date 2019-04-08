@@ -35,7 +35,6 @@ class ProcessorABC(ABC):
         avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
         avatar.putalpha(avatar_mask)
         avatar = ImageOps.fit(avatar, avatar_mask.size)
-        avatar.putalpha(avatar_mask)
         return avatar
 
     @staticmethod
