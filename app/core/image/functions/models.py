@@ -33,18 +33,22 @@ class ProcessorABC(ABC):
         avatar_mask = Image.new("L", avatar.size)
         avatar_drawer = ImageDraw.Draw(avatar_mask)
         avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
-        avatar.putalpha(avatar_mask)
         avatar = ImageOps.fit(avatar, avatar_mask.size)
+        avatar.putalpha(avatar_mask)
         return avatar
 
     @staticmethod
-    def add_avatar_border(avatar, thickness=3):
-        size = (thickness + avatar.size[0], thickness + avatar.size[1])
-        base = Image.new("RGBA", size)
-        draw = ImageDraw.Draw(base)
-        draw.ellipse((0, 0) + size, fill="white", outline="white")
-        base.paste(avatar, (0, 0))
-        return base
+    def add_avatar_border(avatar, width=10):
+        drawer = ImageDraw.Draw(avatar)
+        drawer.ellipse((0, 0) + avatar.size, width=width)
+        return avatar
+
+    @staticmethod
+    def add_banner_border(banner, width=10):
+        drawer = ImageDraw.Draw(banner)
+        xy = (0, 0) + banner.size
+        drawer.rectangle(xy, width=width)
+        return banner
 
 
 class ImageFunction(ProcessorABC, ABC):

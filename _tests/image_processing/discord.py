@@ -30,7 +30,7 @@ class BannerTest(unittest.TestCase):
     BANNER = open("_tests/image_processing/images/banner.gif", "rb")
     AVATAR = open("_tests/image_processing/images/pfp.jpg", "rb")
     NAME = "The Cosmos#9806"
-    TEXT = "Welcome to The Anime Discord! Make New friends! Enjoy your stay!"
+    TEXT = "Welcome to The Anime Discord! Enjoy your stay!"
 
     def test_welcome_banner(self):
         processor = WelcomeBanner()
@@ -38,9 +38,9 @@ class BannerTest(unittest.TestCase):
         if isinstance(banner, list):
             banner[0].show()
             # banner[0].save("/home/thecosmos/Desktop/banner.png")
-            # banner[0].save("/home/thecosmos/Desktop/banner.gif", save_all=True, append_images=banner[1:])
+            banner[0].save("/home/thecosmos/Desktop/banner.gif", save_all=True, append_images=banner[1:])
             self.assertIsInstance(banner[0], Union[Image.Image])
         else:
-            # banner.show()
-            # banner.save("/home/thecosmos/Desktop/banner.png")
+            banner.show()
+            banner.save("/home/thecosmos/Desktop/banner.png")
             self.assertIsInstance(banner, Union[Image.Image])

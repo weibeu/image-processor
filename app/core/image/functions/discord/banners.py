@@ -16,6 +16,8 @@ class WelcomeBanner(ImageFunction):
     TEXT_FONT_SIZE_RATIO_XY = (25, 11)
     BANNER_TEXT_RATIO = 1.222
 
+    BORDER_HEIGHT_RATIO = 96
+
     @staticmethod
     def __get_relative_font_size(xy, ratio_xy):
         x, y = xy
@@ -46,17 +48,23 @@ class WelcomeBanner(ImageFunction):
         # avatar = self.add_avatar_border(avatar)
         avatar = self.get_avatar_icon(avatar)
 
+        border_width = y // self.BORDER_HEIGHT_RATIO
+
+        avatar = self.add_avatar_border(avatar, border_width)
+
         avatar_xy = ((x - avatar.size[0]) // 2, y // self.AVATAR_RATIO_Y)
         frames = [f.copy() for f in ImageSequence.Iterator(banner)]
 
         if len(frames) == 1:
             banner.paste(avatar, avatar_xy, avatar)
+            banner = self.add_banner_border(banner, border_width)
             banner = self.__write_text(banner, name, text)
             frames = banner
         else:
             for i, frame in enumerate(frames):
                 frame = frame.convert("RGBA")
                 frame.paste(avatar, avatar_xy, avatar)
+                frame = self.add_banner_border(frame, border_width)
                 frame = self.__write_text(frame, name, text)
                 frames[i] = frame
 
