@@ -44,7 +44,7 @@ class WelcomeBanner(ImageFunction):
         banner = ImageFunction.Image.open(banner)
         x, y = banner.size
         _ = int(y / self.BANNER_AVATAR_RATIO)
-        avatar = ImageFunction.Image.open(avatar).resize((_, _))
+        avatar = ImageFunction.Image.open(avatar, ).resize((_, _)).convert("RGBA")
         # avatar = self.add_avatar_border(avatar)
         avatar = self.get_avatar_icon(avatar)
 
