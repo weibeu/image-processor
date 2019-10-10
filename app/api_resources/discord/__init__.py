@@ -1,9 +1,11 @@
-from .welcome_banner import DiscordWelcomeBanner
+from .welcome_banner import WelcomeBanner
+from .screenshot_message import SSMessage
 
 
 BASE_ROUTE = "/discord/"
 
 
 RESOURCES = [
-    DiscordWelcomeBanner,
+    WelcomeBanner,
+    SSMessage,
 ]

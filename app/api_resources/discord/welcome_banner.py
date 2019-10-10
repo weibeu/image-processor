@@ -19,7 +19,7 @@ def get_relative_font_size(xy, ratio_xy):
     return min((font_size_x, font_size_y))
 
 
-class DiscordWelcomeBanner(ApiResourceBase):
+class WelcomeBanner(ApiResourceBase):
 
     ROUTE = "banners/welcome/"
 
