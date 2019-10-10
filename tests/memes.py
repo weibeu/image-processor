@@ -1,20 +1,20 @@
 import unittest
-
-from PIL import Image
-
-from typing import Union
-from app.core.image.functions.memes.memes import RIPMeme
+import requests
 
 
 class MemesTest(unittest.TestCase):
 
-    TEST_TEXT = "Test Test Test"
-    TEST_IMAGE = open("tests/image_processing/images/test1.gif", "rb")
-    TEST_AVATAR_URL = open("tests/image_processing/images/pfp.jpg", "rb")
+    URL = "http://127.0.0.1:5000/memes/rip/"
+
+    TEXT = "Test Test Test"
+    AVATAR_URL = "https://i.imgur.com/zsfY16f.jpg"
 
     def test_rip_meme(self):
-        rip_meme = RIPMeme()
-        meme = rip_meme.meme(self.TEST_TEXT, self.TEST_IMAGE)
-        meme.show()
-        self.assertIsInstance(meme, Union[Image.Image])
+        _bytes = requests.post(self.URL, json={
+            "text": self.TEXT,
+            "avatar_url": self.AVATAR_URL,
+        }).content
+        with open("results/meme.png", "wb") as file:
+            file.write(_bytes)
+        self.assertIsInstance(_bytes, bytes)
 

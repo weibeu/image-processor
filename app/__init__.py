@@ -5,7 +5,7 @@ from app.api_resources import discord, memes
 
 resource_packages = [
     discord,
-    # memes,
+    memes,
 ]
 
 
