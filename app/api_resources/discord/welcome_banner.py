@@ -43,6 +43,8 @@ class DiscordWelcomeBanner(ApiResourceBase):
 
     BORDER_HEIGHT_RATIO = 96
 
+    BASE_FILENAME = "welcome"
+
     def write_text(self, base, name, text):
         draw = ImageDraw.Draw(base)
         name_font_size = get_relative_font_size(base.size, self.NAME_FONT_SIZE_RATIO_XY)

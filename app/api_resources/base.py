@@ -17,10 +17,10 @@ class ImageFunctions(object):
 
 class ApiResourceBase(ImageFunctions, Resource):
 
-    FONT_PATH = "./fonts/"
+    FONT_PATH = "app/api_resources/templates/fonts/"
 
     @staticmethod
-    def get_image_from_url(url: str, max_size=10045730):
+    def get_image_from_url(url: str, max_size=3145730):
         response = requests.get(url, stream=True)
         for chunk in response.iter_content(chunk_size=max_size):
             if len(chunk) >= max_size:
