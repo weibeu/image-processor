@@ -35,3 +35,6 @@ ENV/
 
 # Log files
 logs/
+
+# Test results
+tests/results/
