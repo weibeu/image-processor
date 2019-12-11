@@ -1,12 +1,16 @@
 from ..base import ApiResourceBase
 from flask import request, send_file, abort
 
-from PIL import Image, ImageSequence, ImageDraw, ImageOps, ImageFont
+from PIL import Image, ImageSequence, ImageDraw, ImageOps, ImageFont, ImageColor
 
 
 def add_banner_border(banner, width=10, fill=None):
     drawer = ImageDraw.Draw(banner)
     xy = (0, 0) + banner.size
+    try:
+        fill = ImageColor.getrgb(fill)
+    except ValueError:
+        fill = None
     drawer.rectangle(xy, width=width, fill=fill)
     return banner
 
