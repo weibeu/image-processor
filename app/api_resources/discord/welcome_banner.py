@@ -99,7 +99,6 @@ class WelcomeBanner(ApiResourceBase):
             abort(400)
 
         try:
-            print(payload)
             banner_bytes, _ = self._process(**payload)
         except OverflowError:
             abort(413)
