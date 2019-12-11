@@ -4,10 +4,10 @@ from flask import request, send_file, abort
 from PIL import Image, ImageSequence, ImageDraw, ImageOps, ImageFont
 
 
-def add_banner_border(banner, width=10):
+def add_banner_border(banner, width=10, fill=None):
     drawer = ImageDraw.Draw(banner)
     xy = (0, 0) + banner.size
-    drawer.rectangle(xy, width=width)
+    drawer.rectangle(xy, width=width, fill=fill)
     return banner
 
 
@@ -59,11 +59,11 @@ class WelcomeBanner(ApiResourceBase):
         draw.text(text_xy, text, fill=(255, 255, 255), font=text_font)
         return base
 
-    def _process(self, *, banner_url, avatar_url, name, text):
-        banner = Image.open(self.get_image_from_url(banner_url))
+    def _process(self, **payload):
+        banner = Image.open(self.get_image_from_url(payload["banner_url"]))
         x, y = banner.size
         _ = int(y / self.BANNER_AVATAR_RATIO)
-        avatar = Image.open(self.get_image_from_url(avatar_url)).resize((_, _))
+        avatar = Image.open(self.get_image_from_url(payload["avatar_url"])).resize((_, _))
         # avatar = self.add_avatar_border(avatar)
         avatar_mask = Image.new("L", avatar.size)
         avatar_drawer = ImageDraw.Draw(avatar_mask)
@@ -80,15 +80,15 @@ class WelcomeBanner(ApiResourceBase):
 
         if len(frames) == 1:
             banner.paste(avatar, avatar_xy, avatar)
-            banner = add_banner_border(banner, border_width)
-            banner = self.write_text(banner, name, text)
+            banner = add_banner_border(banner, border_width, fill=payload.get("color"))
+            banner = self.write_text(banner, payload["name"], payload["text"])
             frames = banner
         else:
             for i, frame in enumerate(frames):
                 frame = frame.convert("RGBA")
                 frame.paste(avatar, avatar_xy, avatar)
-                frame = add_banner_border(frame, border_width)
-                frame = self.write_text(frame, name, text)
+                frame = add_banner_border(frame, border_width, fill=payload.get("color"))
+                frame = self.write_text(frame, payload["name"], payload["text"])
                 frames[i] = frame
 
         return self.to_bytes(frames)
