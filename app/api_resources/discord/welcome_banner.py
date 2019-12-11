@@ -49,18 +49,18 @@ class WelcomeBanner(ApiResourceBase):
 
     BASE_FILENAME = "welcome"
 
-    def write_text(self, base, name, text):
+    def write_text(self, base, payload):
         draw = ImageDraw.Draw(base)
         name_font_size = get_relative_font_size(base.size, self.NAME_FONT_SIZE_RATIO_XY)
         name_font = ImageFont.truetype(self.FONT_PATH, name_font_size)
-        name_width, _ = draw.textsize(name, font=name_font)
+        name_width, _ = draw.textsize(payload["name"], font=name_font)
         name_xy = (int((base.size[0] - name_width) / 2), int(base.size[1] / self.BANNER_NAME_RATIO))
-        draw.text(name_xy, name, (255, 255, 255), font=name_font)
+        draw.text(name_xy, payload["name"], fill=payload["font_color"] or (255, 255, 255), font=name_font)
         text_font_size = get_relative_font_size(base.size, self.TEXT_FONT_SIZE_RATIO_XY)
         text_font = ImageFont.truetype(self.TEXT_FONT_PATH, text_font_size)
-        text_width, _ = draw.textsize(text, font=text_font)
+        text_width, _ = draw.textsize(payload["text"], font=text_font)
         text_xy = (int((base.size[0] - text_width) / 2), int(base.size[1] / self.BANNER_TEXT_RATIO))
-        draw.text(text_xy, text, fill=(255, 255, 255), font=text_font)
+        draw.text(text_xy, payload["text"], fill=payload["font_color"] or (255, 255, 255), font=text_font)
         return base
 
     def _process(self, **payload):
@@ -85,14 +85,14 @@ class WelcomeBanner(ApiResourceBase):
         if len(frames) == 1:
             banner.paste(avatar, avatar_xy, avatar)
             banner = add_banner_border(banner, border_width, outline=payload.get("border_color"))
-            banner = self.write_text(banner, payload["name"], payload["text"])
+            banner = self.write_text(banner, payload)
             frames = banner
         else:
             for i, frame in enumerate(frames):
                 frame = frame.convert("RGBA")
                 frame.paste(avatar, avatar_xy, avatar)
                 frame = add_banner_border(frame, border_width, outline=payload.get("border_color"))
-                frame = self.write_text(frame, payload["name"], payload["text"])
+                frame = self.write_text(frame, payload)
                 frames[i] = frame
 
         return self.to_bytes(frames)
