@@ -55,12 +55,12 @@ class WelcomeBanner(ApiResourceBase):
         name_font = ImageFont.truetype(self.FONT_PATH, name_font_size)
         name_width, _ = draw.textsize(payload["name"], font=name_font)
         name_xy = (int((base.size[0] - name_width) / 2), int(base.size[1] / self.BANNER_NAME_RATIO))
-        draw.text(name_xy, payload["name"], fill=payload["font_color"] or (255, 255, 255), font=name_font)
+        draw.text(name_xy, payload["name"], fill=payload.get("font_color") or (255, 255, 255), font=name_font)
         text_font_size = get_relative_font_size(base.size, self.TEXT_FONT_SIZE_RATIO_XY)
         text_font = ImageFont.truetype(self.TEXT_FONT_PATH, text_font_size)
         text_width, _ = draw.textsize(payload["text"], font=text_font)
         text_xy = (int((base.size[0] - text_width) / 2), int(base.size[1] / self.BANNER_TEXT_RATIO))
-        draw.text(text_xy, payload["text"], fill=payload["font_color"] or (255, 255, 255), font=text_font)
+        draw.text(text_xy, payload["text"], fill=payload.get("font_color") or (255, 255, 255), font=text_font)
         return base
 
     def _process(self, **payload):
@@ -71,7 +71,7 @@ class WelcomeBanner(ApiResourceBase):
         # avatar = self.add_avatar_border(avatar)
         avatar_mask = Image.new("L", avatar.size)
         avatar_drawer = ImageDraw.Draw(avatar_mask)
-        avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
+        avatar_drawer.ellipse((0, 0) + avatar.size, fill=payload.get("avatar_border_color") or 225)
         avatar = ImageOps.fit(avatar, avatar_mask.size)
         avatar.putalpha(avatar_mask)
 
