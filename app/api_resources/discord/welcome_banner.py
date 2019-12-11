@@ -80,14 +80,14 @@ class WelcomeBanner(ApiResourceBase):
 
         if len(frames) == 1:
             banner.paste(avatar, avatar_xy, avatar)
-            banner = add_banner_border(banner, border_width, fill=payload.get("color"))
+            banner = add_banner_border(banner, border_width, fill=payload.get("border_color"))
             banner = self.write_text(banner, payload["name"], payload["text"])
             frames = banner
         else:
             for i, frame in enumerate(frames):
                 frame = frame.convert("RGBA")
                 frame.paste(avatar, avatar_xy, avatar)
-                frame = add_banner_border(frame, border_width, fill=payload.get("color"))
+                frame = add_banner_border(frame, border_width, fill=payload.get("border_color"))
                 frame = self.write_text(frame, payload["name"], payload["text"])
                 frames[i] = frame
 
