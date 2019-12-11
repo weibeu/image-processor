@@ -4,14 +4,14 @@ from flask import request, send_file, abort
 from PIL import Image, ImageSequence, ImageDraw, ImageOps, ImageFont, ImageColor
 
 
-def add_banner_border(banner, width=10, fill=None):
+def add_banner_border(banner, width=10, outline=None):
     drawer = ImageDraw.Draw(banner)
     xy = (0, 0) + banner.size
     try:
-        fill = ImageColor.getrgb(fill)
+        outline = ImageColor.getrgb(outline)
     except ValueError:
-        fill = None
-    drawer.rectangle(xy, width=width, fill=fill)
+        outline = None
+    drawer.rectangle(xy, width=width, outline=outline)
     return banner
 
 
@@ -84,14 +84,14 @@ class WelcomeBanner(ApiResourceBase):
 
         if len(frames) == 1:
             banner.paste(avatar, avatar_xy, avatar)
-            banner = add_banner_border(banner, border_width, fill=payload.get("border_color"))
+            banner = add_banner_border(banner, border_width, outline=payload.get("border_color"))
             banner = self.write_text(banner, payload["name"], payload["text"])
             frames = banner
         else:
             for i, frame in enumerate(frames):
                 frame = frame.convert("RGBA")
                 frame.paste(avatar, avatar_xy, avatar)
-                frame = add_banner_border(frame, border_width, fill=payload.get("border_color"))
+                frame = add_banner_border(frame, border_width, outline=payload.get("border_color"))
                 frame = self.write_text(frame, payload["name"], payload["text"])
                 frames[i] = frame
 
