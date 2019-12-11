@@ -45,7 +45,7 @@ class WelcomeBanner(ApiResourceBase):
     TEXT_FONT_SIZE_RATIO_XY = (25, 11)
     BANNER_TEXT_RATIO = 1.222
 
-    BORDER_HEIGHT_RATIO = 96
+    BORDER_HEIGHT_RATIO = 70
 
     BASE_FILENAME = "welcome"
 
