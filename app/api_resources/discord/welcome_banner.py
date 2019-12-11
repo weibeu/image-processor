@@ -71,7 +71,7 @@ class WelcomeBanner(ApiResourceBase):
         # avatar = self.add_avatar_border(avatar)
         avatar_mask = Image.new("L", avatar.size)
         avatar_drawer = ImageDraw.Draw(avatar_mask)
-        avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
+        avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)    # TODO: use payload.get("avatar_border_color").
         avatar = ImageOps.fit(avatar, avatar_mask.size)
         avatar.putalpha(avatar_mask)
 
