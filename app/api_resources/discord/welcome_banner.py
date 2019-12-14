@@ -49,6 +49,8 @@ class WelcomeBanner(ApiResourceBase):
 
     BASE_FILENAME = "welcome"
 
+    DISCORD_BANNER_SIZE = (400, 225)
+
     def write_text(self, base, payload):
         draw = ImageDraw.Draw(base)
         name_font_size = get_relative_font_size(base.size, self.NAME_FONT_SIZE_RATIO_XY)
@@ -86,6 +88,7 @@ class WelcomeBanner(ApiResourceBase):
             banner.paste(avatar, avatar_xy, avatar)
             banner = add_banner_border(banner, border_width, outline=payload.get("border_color"))
             banner = self.write_text(banner, payload)
+            banner.thumbnail(self.DISCORD_BANNER_SIZE, Image.ANTIALIAS)
             frames = banner
         else:
             for i, frame in enumerate(frames):
@@ -93,6 +96,7 @@ class WelcomeBanner(ApiResourceBase):
                 frame.paste(avatar, avatar_xy, avatar)
                 frame = add_banner_border(frame, border_width, outline=payload.get("border_color"))
                 frame = self.write_text(frame, payload)
+                frame.thumbnail(self.DISCORD_BANNER_SIZE, Image.ANTIALIAS)
                 frames[i] = frame
 
         return self.to_bytes(frames)
