@@ -38,7 +38,8 @@ class ApiResourceBase(ImageFunctions, Resource):
         image_bytes = BytesIO()
         if isinstance(image, list):
             image_format = "gif"
-            image[0].save(image_bytes, save_all=True, append_images=image[1:], format=image_format.upper())
+            image[0].save(
+                image_bytes, save_all=True, append_images=image[1:], format=image_format.upper(), optimize=True)
         else:
             image.save(image_bytes, format=image_format.upper())
         image_bytes.seek(0)
