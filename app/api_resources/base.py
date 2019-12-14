@@ -21,6 +21,7 @@ class ApiResourceBase(ImageFunctions, Resource):
 
     @staticmethod
     def get_image_from_url(url: str, max_size=3145730):
+        # TODO: Implement local image cache.
         response = requests.get(url, stream=True)
         for chunk in response.iter_content(chunk_size=max_size):
             if len(chunk) >= max_size:
