@@ -36,5 +36,8 @@ ENV/
 # Log files
 logs/
 
+# Local cache
+cache/
+
 # Test results
 tests/results/
