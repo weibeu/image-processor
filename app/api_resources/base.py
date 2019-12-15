@@ -1,4 +1,7 @@
+import os
+import base64
 import requests
+
 from io import BytesIO
 from PIL import Image, ImageDraw
 from abc import abstractmethod
@@ -17,18 +20,31 @@ class ImageFunctions(object):
 
 class ApiResourceBase(ImageFunctions, Resource):
 
+    IMAGE_CACHE_PATH = "cache/images/"
     FONT_PATH = "app/api_resources/templates/fonts/"
 
     @staticmethod
-    def get_image_from_url(url: str, max_size=3145730):
-        # TODO: Implement local image cache.
-        response = requests.get(url, stream=True)
-        for chunk in response.iter_content(chunk_size=max_size):
-            if len(chunk) >= max_size:
-                raise OverflowError
-            image_bytes = BytesIO(chunk)
-            image_bytes.seek(0)
-            return image_bytes
+    def encode_url(url):
+        return base64.urlsafe_b64encode(url.encode("ascii")).decode("ascii")
+
+    def get_image_from_url(self, url: str, max_size=3145730):
+        file_path = self.IMAGE_CACHE_PATH + self.encode_url(url)
+        try:
+            with open(file_path, "rb") as file:
+                return BytesIO(file.read())
+        except FileNotFoundError:
+            response = requests.get(url, stream=True)
+            for chunk in response.iter_content(chunk_size=max_size):
+                if len(chunk) >= max_size:
+                    raise OverflowError
+                image_bytes = BytesIO(chunk)
+                image_bytes.seek(0)
+                try:
+                    with open(file_path, "wb") as file:
+                        file.write(image_bytes.read())
+                except FileNotFoundError:
+                    os.makedirs(self.IMAGE_CACHE_PATH)
+                return image_bytes
 
     @abstractmethod
     def _process(self, **kwargs):
