@@ -27,24 +27,29 @@ class ApiResourceBase(ImageFunctions, Resource):
     def encode_url(url):
         return base64.urlsafe_b64encode(url.encode("ascii")).decode("ascii")
 
-    def get_image_from_url(self, url: str, max_size=3145730):
+    @staticmethod
+    def get_image_from_url(url: str, max_size=3145730):
+        response = requests.get(url, stream=True)
+        for chunk in response.iter_content(chunk_size=max_size):
+            if len(chunk) >= max_size:
+                raise OverflowError
+            image_bytes = BytesIO(chunk)
+            image_bytes.seek(0)
+            return image_bytes
+
+    def get_cached_image_from_url(self, url: str, max_size=3145730):
         file_path = self.IMAGE_CACHE_PATH + self.encode_url(url)
         try:
             with open(file_path, "rb") as file:
                 return BytesIO(file.read())
         except FileNotFoundError:
-            response = requests.get(url, stream=True)
-            for chunk in response.iter_content(chunk_size=max_size):
-                if len(chunk) >= max_size:
-                    raise OverflowError
-                image_bytes = BytesIO(chunk)
-                image_bytes.seek(0)
-                try:
-                    with open(file_path, "wb") as file:
-                        file.write(image_bytes.read())
-                except FileNotFoundError:
-                    os.makedirs(self.IMAGE_CACHE_PATH)
-                return image_bytes
+            image_bytes = self.get_image_from_url(url, max_size)
+            try:
+                with open(file_path, "wb") as file:
+                    file.write(image_bytes.read())
+            except FileNotFoundError:
+                os.makedirs(self.IMAGE_CACHE_PATH)
+            return image_bytes
 
     @abstractmethod
     def _process(self, **kwargs):
