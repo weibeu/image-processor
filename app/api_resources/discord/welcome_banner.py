@@ -8,7 +8,7 @@ def add_banner_border(banner, width=10, outline=None):
     drawer = ImageDraw.Draw(banner)
     xy = (0, 0) + banner.size
     try:
-        outline = ImageColor.getrgb(outline)
+        outline = ImageColor.getrgb(outline or "#ffffff")
     except ValueError:
         outline = None
     drawer.rectangle(xy, width=width, outline=outline)
