@@ -1,0 +1,12 @@
+[Unit]
+Description=Image Processor
+After=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=~/image-processor
+ExecStart=gunicorn -b 127.0.0.1:5000 "app:create_app()"
+User=root
+
+[Install]
+WantedBy=multi-user.target
