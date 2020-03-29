@@ -23,12 +23,14 @@ class ApiResourceBase(ImageFunctions, Resource):
     IMAGE_CACHE_PATH = "cache/images/"
     FONT_PATH = "app/api_resources/templates/fonts/"
 
+    MEDIA_MAX_SIZE = 4200000
+
     @staticmethod
     def encode_url(url):
         return base64.urlsafe_b64encode(url.encode("ascii")).decode("ascii")
 
     @staticmethod
-    def get_image_from_url(url: str, max_size=3145730):
+    def get_image_from_url(url: str, max_size=MEDIA_MAX_SIZE):
         response = requests.get(url, stream=True)
         for chunk in response.iter_content(chunk_size=max_size):
             if len(chunk) >= max_size:
@@ -37,7 +39,7 @@ class ApiResourceBase(ImageFunctions, Resource):
             image_bytes.seek(0)
             return image_bytes
 
-    def get_cached_image_from_url(self, url: str, max_size=3145730):
+    def get_cached_image_from_url(self, url: str, max_size=MEDIA_MAX_SIZE):
         file_path = self.IMAGE_CACHE_PATH + self.encode_url(url)
         try:
             with open(file_path, "rb") as file:
