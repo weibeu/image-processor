@@ -1,11 +1,12 @@
 [Unit]
-Description=Image Processor
+Description=Cosmos
 After=multi-user.target
 
 [Service]
 Type=simple
-WorkingDirectory=~/image-processor
-ExecStart=gunicorn -b 127.0.0.1:5000 "app:create_app()"
+Restart=always
+WorkingDirectory=/home/thecosmos/cosmos-discord-bot
+ExecStart=python3.8 /home/thecosmos/cosmos-discord-bot/run.py
 User=root
 
 [Install]
