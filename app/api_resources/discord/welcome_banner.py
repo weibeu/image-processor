@@ -49,7 +49,7 @@ class WelcomeBanner(ApiResourceBase):
 
     BASE_FILENAME = "welcome"
 
-    DISCORD_BANNER_SIZE = (400, 225)
+    DISCORD_BANNER_SIZE = (720, 407)
 
     def write_text(self, base, payload):
         draw = ImageDraw.Draw(base)
