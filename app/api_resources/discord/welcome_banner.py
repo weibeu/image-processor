@@ -102,9 +102,7 @@ class WelcomeBanner(ApiResourceBase):
         return self.to_bytes(frames)
 
     def post(self):
-        payload = request.get_json()
-        if not all(key in payload for key in self.REQUIRED_DATA):
-            abort(400)
+        payload = self.get_json()
 
         try:
             banner_bytes, _ = self._process(**payload)

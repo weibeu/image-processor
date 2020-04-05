@@ -6,6 +6,7 @@ from io import BytesIO
 from PIL import Image, ImageDraw
 from abc import abstractmethod
 
+from flask import request, abort
 from flask_restful import Resource
 
 
@@ -21,11 +22,12 @@ class ImageFunctions(object):
 class ApiResourceBase(ImageFunctions, Resource):
 
     ROUTE = str()
+    REQUIRED_DATA = list()
 
     def __new__(cls, *args, **kwargs):
         if not cls.ROUTE:
             raise NotImplementedError
-        super().__init__(*args, **kwargs)
+        return super().__new__(cls, *args, **kwargs)
 
     IMAGE_CACHE_PATH = "cache/images/"
     FONT_PATH = "app/api_resources/templates/fonts/"
@@ -75,3 +77,9 @@ class ApiResourceBase(ImageFunctions, Resource):
             image.save(image_bytes, format=image_format.upper())
         image_bytes.seek(0)
         return image_bytes, image_format
+
+    def get_json(self):
+        payload = request.get_json()
+        if not all(key in payload for key in self.REQUIRED_DATA):
+            abort(400)
+        return payload

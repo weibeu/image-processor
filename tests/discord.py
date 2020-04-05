@@ -14,17 +14,17 @@ class BannerTest(unittest.TestCase):
     BANNER_URL = "https://i.imgur.com/I8fNRV8.jpg"
     AVATAR_URL = "https://i.imgur.com/zsfY16f.jpg"
 
-    NAME = "The Cosmos#9806"
+    NAME = "The Cosmos#7777"
     TEXT = "Welcome to B-20! Enjoy your stay!"
 
     def test_welcome_banner(self):
         _bytes = requests.post(self.URL, json={
-            "banner_url": self.A_BANNER_URL,
+            "banner_url": self.BANNER_URL,
             "avatar_url": self.AVATAR_URL,
             "name": self.NAME,
             "text": self.TEXT,
         }).content
-        with open("results/test.gif", "wb") as file:
+        with open("results/test.png", "wb") as file:
             file.write(_bytes)
         self.assertIsInstance(_bytes, bytes)
 
