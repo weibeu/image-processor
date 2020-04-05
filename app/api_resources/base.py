@@ -20,6 +20,13 @@ class ImageFunctions(object):
 
 class ApiResourceBase(ImageFunctions, Resource):
 
+    ROUTE = str()
+
+    def __new__(cls, *args, **kwargs):
+        if not cls.ROUTE:
+            raise NotImplementedError
+        super().__init__(*args, **kwargs)
+
     IMAGE_CACHE_PATH = "cache/images/"
     FONT_PATH = "app/api_resources/templates/fonts/"
 
