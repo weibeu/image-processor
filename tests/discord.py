@@ -1,14 +1,17 @@
 import unittest
-from io import BytesIO
-
 import requests
 
-from PIL import Image
+
+class DiscordTestCase(unittest.TestCase):
+
+    BASE_URL = "http://127.0.0.1:5000/discord"
+    PATH = str()
+    URL = BASE_URL + PATH
 
 
-class BannerTest(unittest.TestCase):
+class BannerTest(DiscordTestCase):
 
-    URL = "http://127.0.0.1:5000/discord/banners/welcome/"
+    PATH = "/banners/welcome/"
 
     A_BANNER_URL = "https://i.imgur.com/6aieR4Y.gif"
     BANNER_URL = "https://i.imgur.com/I8fNRV8.jpg"
@@ -29,9 +32,9 @@ class BannerTest(unittest.TestCase):
         self.assertIsInstance(_bytes, bytes)
 
 
-class MessageScreenshotsTest(unittest.TestCase):
+class MessageScreenshotsTest(DiscordTestCase):
 
-    URL = "http://127.0.0.1:5000/discord/ss/message/"
+    PATH = "/ss/message/"
 
     NAME = "The Cosmos#9806"
     MESSAGE_CONTENT = "mply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ind"
