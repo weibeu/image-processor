@@ -69,7 +69,7 @@ class WelcomeBanner(ApiResourceBase):
         banner = Image.open(self.get_cached_image_from_url(payload["banner_url"]))
         x, y = banner.size
         _ = int(y / self.BANNER_AVATAR_RATIO)
-        avatar = Image.open(self.get_cached_image_from_url(payload["avatar_url"])).resize((_, _))
+        avatar = Image.open(self.get_image_from_url(payload["avatar_url"])).resize((_, _))
         # avatar = self.add_avatar_border(avatar)
         avatar_mask = Image.new("L", avatar.size)
         avatar_drawer = ImageDraw.Draw(avatar_mask)
