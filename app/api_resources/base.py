@@ -3,7 +3,7 @@ import base64
 import requests
 
 from io import BytesIO
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 from abc import abstractmethod
 
 from flask import request, abort
@@ -23,6 +23,8 @@ class ApiResourceBase(ImageFunctions, Resource):
 
     ROUTE = str()
     REQUIRED_DATA = list()
+
+    TEMPLATES_PATH = "app/api_resources/templates/"
 
     def __new__(cls, *args, **kwargs):
         if not cls.ROUTE:
@@ -83,3 +85,12 @@ class ApiResourceBase(ImageFunctions, Resource):
         if not all(key in payload for key in self.REQUIRED_DATA):
             abort(400)
         return payload
+
+    @staticmethod
+    def get_round_avatar(avatar):
+        avatar_mask = Image.new("L", avatar.size)
+        avatar_drawer = ImageDraw.Draw(avatar_mask)
+        avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
+        avatar = ImageOps.fit(avatar, avatar_mask.size)
+        avatar.putalpha(avatar_mask)
+        return avatar
