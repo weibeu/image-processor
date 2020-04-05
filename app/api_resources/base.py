@@ -18,6 +18,15 @@ class ImageFunctions(object):
         drawer.ellipse((0, 0) + avatar.size, width=width)
         return avatar
 
+    @staticmethod
+    def get_round_avatar(avatar):
+        avatar_mask = Image.new("L", avatar.size)
+        avatar_drawer = ImageDraw.Draw(avatar_mask)
+        avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
+        avatar = ImageOps.fit(avatar, avatar_mask.size)
+        avatar.putalpha(avatar_mask)
+        return avatar
+
 
 class ApiResourceBase(ImageFunctions, Resource):
 
@@ -85,12 +94,3 @@ class ApiResourceBase(ImageFunctions, Resource):
         if not all(key in payload for key in self.REQUIRED_DATA):
             abort(400)
         return payload
-
-    @staticmethod
-    def get_round_avatar(avatar):
-        avatar_mask = Image.new("L", avatar.size)
-        avatar_drawer = ImageDraw.Draw(avatar_mask)
-        avatar_drawer.ellipse((0, 0) + avatar.size, fill=225)
-        avatar = ImageOps.fit(avatar, avatar_mask.size)
-        avatar.putalpha(avatar_mask)
-        return avatar
