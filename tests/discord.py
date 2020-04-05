@@ -25,6 +25,7 @@ class BannerTest(DiscordTestCase):
             "avatar_url": self.AVATAR_URL,
             "name": self.NAME,
             "text": self.TEXT,
+            "border_color": "#FFFF00",
         }).content
         with open("results/test.png", "wb") as file:
             file.write(_bytes)
