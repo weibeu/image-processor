@@ -75,7 +75,7 @@ class WelcomeBanner(ApiResourceBase):
 
         border_width = y // self.BORDER_HEIGHT_RATIO
 
-        avatar = self.add_avatar_border(avatar, border_width)
+        avatar = self.add_avatar_border(avatar, border_width, payload.get("border_color"))
 
         avatar_xy = ((x - avatar.size[0]) // 2, y // self.AVATAR_RATIO_Y)
         frames = [f.copy() for f in ImageSequence.Iterator(banner)]

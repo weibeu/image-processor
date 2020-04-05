@@ -3,7 +3,7 @@ import base64
 import requests
 
 from io import BytesIO
-from PIL import Image, ImageDraw, ImageOps
+from PIL import Image, ImageDraw, ImageOps, ImageColor
 from abc import abstractmethod
 
 from flask import request, abort
@@ -13,9 +13,13 @@ from flask_restful import Resource
 class ImageFunctions(object):
 
     @staticmethod
-    def add_avatar_border(avatar, width=10):
+    def add_avatar_border(avatar, width=10, outline=None):
+        try:
+            outline = ImageColor.getrgb(outline)
+        except ValueError:
+            outline = None
         drawer = ImageDraw.Draw(avatar)
-        drawer.ellipse((0, 0) + avatar.size, width=width)
+        drawer.ellipse((0, 0) + avatar.size, width=width, outline=outline)
         return avatar
 
     @staticmethod
