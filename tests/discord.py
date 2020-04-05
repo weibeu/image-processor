@@ -5,13 +5,12 @@ import requests
 class DiscordTestCase(unittest.TestCase):
 
     BASE_URL = "http://127.0.0.1:5000/discord"
-    PATH = str()
-    URL = BASE_URL + PATH
 
 
 class BannerTest(DiscordTestCase):
 
     PATH = "/banners/welcome/"
+    URL = DiscordTestCase.BASE_URL + PATH
 
     A_BANNER_URL = "https://i.imgur.com/6aieR4Y.gif"
     BANNER_URL = "https://i.imgur.com/I8fNRV8.jpg"
@@ -35,6 +34,7 @@ class BannerTest(DiscordTestCase):
 class MessageScreenshotsTest(DiscordTestCase):
 
     PATH = "/ss/message/"
+    URL = DiscordTestCase.BASE_URL + PATH
 
     NAME = "The Cosmos#9806"
     MESSAGE_CONTENT = "mply dummy text of the printing and typesetting industry. Lorem Ipsum has been the ind"
@@ -47,5 +47,17 @@ class MessageScreenshotsTest(DiscordTestCase):
             "avatar_url": self.TEST_URL,
         }).content
         with open("results/testss.png", "wb") as file:
+            file.write(_bytes)
+        self.assertIsInstance(_bytes, bytes)
+
+
+class RankCardTest(DiscordTestCase):
+
+    PATH = "/profile/rank/"
+    URL = DiscordTestCase.BASE_URL + PATH
+
+    def test_rank_card(self):
+        _bytes = requests.post(self.URL, json={}).content
+        with open("results/rank_card.png", "wb") as file:
             file.write(_bytes)
         self.assertIsInstance(_bytes, bytes)
