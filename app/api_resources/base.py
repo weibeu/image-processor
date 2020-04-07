@@ -13,11 +13,14 @@ from flask_restful import Resource
 class ImageFunctions(object):
 
     @staticmethod
-    def add_avatar_border(avatar, width=10, outline=None):
+    def get_color(color):
         try:
-            outline = ImageColor.getrgb(outline)
+            return ImageColor.getrgb(color)
         except ValueError:
-            outline = None
+            return
+
+    def add_avatar_border(self, avatar, width=10, outline=None):
+        outline = self.get_color(outline)
         drawer = ImageDraw.Draw(avatar)
         drawer.ellipse((0, 0) + avatar.size, width=width, outline=outline)
         return avatar
@@ -30,6 +33,12 @@ class ImageFunctions(object):
         avatar = ImageOps.fit(avatar, avatar_mask.size)
         avatar.putalpha(avatar_mask)
         return avatar
+
+    def draw_circular_progress(self, base, value, max_value, box, width=30, fill=None):
+        fill = self.get_color(fill)
+        angle = ((value / max_value) * 360) - 90
+        drawer = ImageDraw.Draw(base)
+        drawer.arc(box, -90, angle, width=width, fill=fill)
 
 
 class ApiResourceBase(ImageFunctions, Resource):
