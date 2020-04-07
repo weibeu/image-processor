@@ -16,7 +16,7 @@ class ImageFunctions(object):
     def get_color(color):
         try:
             return ImageColor.getrgb(color)
-        except ValueError:
+        except (AttributeError, ValueError):
             return
 
     def add_avatar_border(self, avatar, width=10, outline=None):
