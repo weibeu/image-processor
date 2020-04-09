@@ -22,7 +22,7 @@ class RankCard(ApiResourceBase):
     LEVEL_MATERIAL_PATH = ApiResourceBase.TEMPLATES_PATH + "discord/rank_card/levelmaterial.png"
 
     AVATAR_SIZE = (553, 553)
-    AVATAR_XY = (271, 299)
+    AVATAR_XY = (170, 299)
     # PROGRESS_CENTER = (2635, 299)
 
     LEVEL_MATERIAL_XY = (2413, 83)
@@ -38,7 +38,7 @@ class RankCard(ApiResourceBase):
     WIDTH_PROGRESS1 = 60
     WIDTH_PROGRESS2 = 50
 
-    NAME_XY = (870, 430)
+    NAME_XY = (769, 430)
     LEVEL_XY1 = (2550, 105)    # (2573, 143)
     LEVEL_XY2 = (2550, 297)    # (2573, 370)
     RANK_XY = (2300, 620)
