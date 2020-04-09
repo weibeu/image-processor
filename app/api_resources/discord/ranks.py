@@ -18,7 +18,7 @@ class RankCard(ApiResourceBase):
     TEXT_FONT_PATH = ApiResourceBase.FONT_PATH + "Futura_20Medium_20BT.ttf"
     DISCRIMINATOR_FONT_PATH = ApiResourceBase.FONT_PATH + "AmaticSC-Bold.ttf"
 
-    RANK_CARD_BASE_PATH = ApiResourceBase.TEMPLATES_PATH + "discord/rank_card/rank_bg_final.png"
+    RANK_CARD_BASE_PATH = ApiResourceBase.TEMPLATES_PATH + "discord/rank_card/rank_bg_final2.png"
     LEVEL_MATERIAL_PATH = ApiResourceBase.TEMPLATES_PATH + "discord/rank_card/levelmaterial.png"
 
     AVATAR_SIZE = (553, 553)
@@ -38,10 +38,10 @@ class RankCard(ApiResourceBase):
     WIDTH_PROGRESS1 = 60
     WIDTH_PROGRESS2 = 50
 
-    NAME_XY = (769, 430)
+    NAME_XY = (769, 437)
     LEVEL_XY1 = (2550, 105)    # (2573, 143)
     LEVEL_XY2 = (2550, 297)    # (2573, 370)
-    RANK_XY = (2300, 620)
+    RANK_XY = (1185, 770)    # (2300, 620)
     TEXT_XP_XY = (1580, 897)
     TEXT_XP_TOTAL_XY = (1880 + 10, 897)
     VOICE_XP_XY = (2225, 897)
@@ -49,7 +49,7 @@ class RankCard(ApiResourceBase):
 
     def write_texts(self, kwargs, base):
         draw = ImageDraw.Draw(base)
-        name_font = ImageFont.truetype(self.NAME_FONT_PATH, size=170)
+        name_font = ImageFont.truetype(self.NAME_FONT_PATH, size=177)
         draw.text(self.NAME_XY, kwargs["name"], font=name_font)
         discriminator_xy = draw.textsize(kwargs["name"], font=name_font)
         discriminator_xy = discriminator_xy[0] + self.NAME_XY[0] + 10, self.NAME_XY[1] + discriminator_xy[1] - 90
@@ -60,7 +60,7 @@ class RankCard(ApiResourceBase):
         draw.text(self.LEVEL_XY1, str(kwargs["text_level"]), fill=self.TEXT_PROGRESS_FILL1, font=level_font)
         draw.text(self.LEVEL_XY2, str(kwargs["voice_level"]), fill=self.TEXT_PROGRESS_FILL2, font=level_font)
 
-        rank_font = ImageFont.truetype(self.RANK_FONT_PATH, size=150)
+        rank_font = ImageFont.truetype(self.RANK_FONT_PATH, size=170)
         draw.text(self.RANK_XY, str(kwargs["rank"]), fill=self.RANK_FILL, font=rank_font)
         text_font = ImageFont.truetype(self.TEXT_FONT_PATH, size=53)
         draw.text(
