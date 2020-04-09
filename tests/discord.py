@@ -58,7 +58,12 @@ class RankCardTest(DiscordTestCase):
     URL = DiscordTestCase.BASE_URL + PATH
 
     def test_rank_card(self):
-        _bytes = requests.post(self.URL, json={}).content
+        _bytes = requests.post(self.URL, json={
+            "name": "□ | The Cosmos",
+            "avatar_url": "http://localhost/haru.jpg",
+            "text_xp": 75, "text_target_xp": 100, "text_total_xp": 1291,
+            "voice_xp": 60, "voice_target_xp": 100, "voice_total_xp": 170,
+        }).content
         with open("results/rank_card.png", "wb") as file:
             file.write(_bytes)
         self.assertIsInstance(_bytes, bytes)
