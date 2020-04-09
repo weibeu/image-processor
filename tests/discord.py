@@ -60,7 +60,7 @@ class RankCardTest(DiscordTestCase):
     def test_rank_card(self):
         _bytes = requests.post(self.URL, json={
             "name": "□ | The Cosmos", "discriminator": "#6811",
-            "avatar_url": "http://localhost/haru.jpg", "rank": 7,
+            "avatar_url": "http://localhost/haru.jpg", "text_rank": 7, "voice_rank": 2,
             "text_xp": 75, "text_target_xp": 100, "text_total_xp": 1291, "text_level": 11,
             "voice_xp": 60, "voice_target_xp": 100, "voice_total_xp": 170, "voice_level": 17,
         }).content
