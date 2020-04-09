@@ -74,7 +74,7 @@ class RankCard(ApiResourceBase):
 
     def _process(self, **kwargs):
         base = Image.open(self.RANK_CARD_BASE_PATH)
-        avatar = Image.open(self.get_image_from_url(kwargs["avatar_url"]))
+        avatar = Image.open(self.get_image_from_url(kwargs["avatar_url"])).convert("RGBA")
         avatar = self.get_round_avatar(avatar)
         avatar = avatar.resize(self.AVATAR_SIZE)
 
