@@ -18,7 +18,7 @@ class RankCard(ApiResourceBase):
     TEXT_FONT_PATH = ApiResourceBase.FONT_PATH + "Futura_20Medium_20BT.ttf"
     DISCRIMINATOR_FONT_PATH = ApiResourceBase.FONT_PATH + "AmaticSC-Bold.ttf"
 
-    RANK_CARD_BASE_PATH = ApiResourceBase.TEMPLATES_PATH + "discord/rank_card/rank_bg_final1.png"
+    RANK_CARD_BASE_PATH = ApiResourceBase.TEMPLATES_PATH + "discord/rank_card/rank_bg.png"
     LEVEL_MATERIAL_PATH = ApiResourceBase.TEMPLATES_PATH + "discord/rank_card/levelmaterial.png"
 
     AVATAR_SIZE = (553, 553)
@@ -32,17 +32,19 @@ class RankCard(ApiResourceBase):
 
     TEXT_PROGRESS_FILL2 = "#ff6859"
     TEXT_PROGRESS_FILL1 = "#ffcf44"
-    RANK_FILL = "#fc0e80"
+    # RANK_FILL1 = RANK_FILL2 = "#fc0e80"
+    RANK_FILL1 = TEXT_PROGRESS_FILL1
+    RANK_FILL2 = TEXT_PROGRESS_FILL2
     TEXT_FILL = "#1eb980"
 
     WIDTH_PROGRESS1 = 60
     WIDTH_PROGRESS2 = 50
 
-    NAME_XY = (769, 437)
+    NAME_XY = (787, 417)
     LEVEL_XY1 = (2550, 105)    # (2573, 143)
     LEVEL_XY2 = (2550, 297)    # (2573, 370)
-    RANK_XY1 = (1190, 670)    # (1920, 670)    # (1185, 770)    # (2300, 620)
-    RANK_XY2 = (1190, 800)    # (2535, 670)    # (1185, 770)    # (2300, 620)
+    RANK_XY1 = (1150, 670)    # (1920, 670)    # (1185, 770)    # (2300, 620)
+    RANK_XY2 = (1150, 800)    # (2535, 670)    # (1185, 770)    # (2300, 620)
     TEXT_XP_XY = (1580, 897)
     TEXT_XP_TOTAL_XY = (1880 + 10, 897)
     VOICE_XP_XY = (2225, 897)
@@ -62,8 +64,8 @@ class RankCard(ApiResourceBase):
         draw.text(self.LEVEL_XY2, str(kwargs["voice_level"]), fill=self.TEXT_PROGRESS_FILL2, font=level_font)
 
         rank_font = ImageFont.truetype(self.RANK_FONT_PATH, size=150)
-        draw.text(self.RANK_XY1, str(kwargs["text_rank"]), fill=self.RANK_FILL, font=rank_font)
-        draw.text(self.RANK_XY2, str(kwargs["voice_rank"]), fill=self.RANK_FILL, font=rank_font)
+        draw.text(self.RANK_XY1, str(kwargs["text_rank"]), fill=self.RANK_FILL1, font=rank_font)
+        draw.text(self.RANK_XY2, str(kwargs["voice_rank"]), fill=self.RANK_FILL2, font=rank_font)
         text_font = ImageFont.truetype(self.TEXT_FONT_PATH, size=53)
         draw.text(
             self.TEXT_XP_XY, f"{kwargs['text_xp']} / {kwargs['text_total_xp']}", fill=self.TEXT_FILL, font=text_font)
