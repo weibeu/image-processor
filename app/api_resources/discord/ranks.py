@@ -70,8 +70,8 @@ class RankCard(ApiResourceBase):
         draw.text(
             self.TEXT_XP_XY, f"{kwargs['text_xp']} / {kwargs['text_target_xp']}", fill=self.TEXT_FILL, font=text_font)
         draw.text(self.TEXT_XP_TOTAL_XY, str(kwargs["text_total_xp"]), fill=self.TEXT_FILL, font=text_font)
-        draw.text(
-            self.VOICE_XP_XY, f"{kwargs['voice_xp']} / {kwargs['voice_target_xp']}", fill=self.TEXT_FILL, font=text_font)
+        draw.text(self.VOICE_XP_XY,
+                  f"{kwargs['voice_xp']} / {kwargs['voice_target_xp']}", fill=self.TEXT_FILL, font=text_font)
         draw.text(self.VOICE_XP_TOTAL_XY, str(kwargs["voice_total_xp"]), fill=self.TEXT_FILL, font=text_font)
 
     def _process(self, **kwargs):
