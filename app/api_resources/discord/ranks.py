@@ -1,6 +1,14 @@
+import humanize
+
 from flask import send_file
 from ..base import ApiResourceBase
 from PIL import Image, ImageDraw, ImageFont
+
+
+def humanize_stats(value, start=1000):
+    if value >= start:
+        return humanize.naturalsize(value, gnu=True)
+    return str(value)
 
 
 class RankCard(ApiResourceBase):
@@ -45,12 +53,13 @@ class RankCard(ApiResourceBase):
     LEVEL_XY2 = (2550, 297)    # (2573, 370)
     RANK_XY1 = (1150, 660)    # (1920, 670)    # (1185, 770)    # (2300, 620)
     RANK_XY2 = (1150, 800)    # (2535, 670)    # (1185, 770)    # (2300, 620)
-    TEXT_XP_XY = (1580, 897)
-    TEXT_XP_TOTAL_XY = (1880 + 10, 897)
-    VOICE_XP_XY = (2225, 897)
-    VOICE_XP_TOTAL_XY = (2555 + 10, 897)
+    TEXT_XP_XY = (1577, 897)
+    TEXT_XP_TOTAL_XY = (1917 + 10, 897)
+    VOICE_XP_XY = (2250, 897)
+    VOICE_XP_TOTAL_XY = (2580 + 10, 897)
 
     def write_texts(self, kwargs, base):
+        _ = humanize_stats
         draw = ImageDraw.Draw(base)
         name_font = ImageFont.truetype(self.NAME_FONT_PATH, size=177)
         draw.text(self.NAME_XY, kwargs["name"], font=name_font)
@@ -64,15 +73,15 @@ class RankCard(ApiResourceBase):
         draw.text(self.LEVEL_XY2, str(kwargs["voice_level"]), fill=self.TEXT_PROGRESS_FILL2, font=level_font)
 
         rank_font = ImageFont.truetype(self.RANK_FONT_PATH, size=150)
-        draw.text(self.RANK_XY1, str(kwargs["text_rank"]), fill=self.RANK_FILL1, font=rank_font)
-        draw.text(self.RANK_XY2, str(kwargs["voice_rank"]), fill=self.RANK_FILL2, font=rank_font)
+        draw.text(self.RANK_XY1, _(kwargs["text_rank"]), fill=self.RANK_FILL1, font=rank_font)
+        draw.text(self.RANK_XY2, _(kwargs["voice_rank"]), fill=self.RANK_FILL2, font=rank_font)
         text_font = ImageFont.truetype(self.TEXT_FONT_PATH, size=53)
-        draw.text(
-            self.TEXT_XP_XY, f"{kwargs['text_xp']} / {kwargs['text_target_xp']}", fill=self.TEXT_FILL, font=text_font)
-        draw.text(self.TEXT_XP_TOTAL_XY, str(kwargs["text_total_xp"]), fill=self.TEXT_FILL, font=text_font)
+        draw.text(self.TEXT_XP_XY,
+                  f"{_(kwargs['text_xp'])}/{_(kwargs['text_target_xp'])}", fill=self.TEXT_FILL, font=text_font)
+        draw.text(self.TEXT_XP_TOTAL_XY, _(kwargs["text_total_xp"]), fill=self.TEXT_FILL, font=text_font)
         draw.text(self.VOICE_XP_XY,
-                  f"{kwargs['voice_xp']} / {kwargs['voice_target_xp']}", fill=self.TEXT_FILL, font=text_font)
-        draw.text(self.VOICE_XP_TOTAL_XY, str(kwargs["voice_total_xp"]), fill=self.TEXT_FILL, font=text_font)
+                  f"{_(kwargs['voice_xp'])}/{_(kwargs['voice_target_xp'])}", fill=self.TEXT_FILL, font=text_font)
+        draw.text(self.VOICE_XP_TOTAL_XY, _(kwargs["voice_total_xp"]), fill=self.TEXT_FILL, font=text_font)
 
     def _process(self, **kwargs):
         base = Image.open(self.RANK_CARD_BASE_PATH)

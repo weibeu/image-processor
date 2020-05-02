@@ -3,3 +3,4 @@ flask
 flask_restful
 pillow
 gunicorn
+humanize
