@@ -68,14 +68,16 @@ class WelcomeBanner(ApiResourceBase):
     def _process(self, **payload):
         banner = Image.open(self.get_cached_image_from_url(payload["banner_url"]))
         x, y = banner.size
+        _x, _y = (self.DISCORD_BANNER_SIZE[0], int((x / y)) * self.DISCORD_BANNER_SIZE[1])
         _ = int(y / self.BANNER_AVATAR_RATIO)
-        avatar = Image.open(self.get_image_from_url(payload["avatar_url"])).resize((_, _)).convert("RGBA")
+        avatar = Image.open(self.get_image_from_url(payload["avatar_url"])).convert("RGBA")
         # avatar = self.add_avatar_border(avatar)
         avatar = self.get_round_avatar(avatar)
 
         border_width = y // self.BORDER_HEIGHT_RATIO
 
         avatar = self.add_avatar_border(avatar, border_width, payload.get("border_color"))
+        avatar = avatar.resize((_, _))
 
         avatar_xy = ((x - avatar.size[0]) // 2, y // self.AVATAR_RATIO_Y)
         frames = [f.copy() for f in ImageSequence.Iterator(banner)]
