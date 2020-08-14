@@ -37,9 +37,9 @@ class WelcomeBanner(ApiResourceBase):
     BANNER_AVATAR_RATIO = 2
     AVATAR_RATIO_Y = 17
 
-    FONT_PATH = ApiResourceBase.FONT_PATH + "BlackOpsOne-Regular.ttf"
+    FONT_PATH = ApiResourceBase.FONT_PATH + "KaushanScript-Regular.ttf"
     NAME_FONT_SIZE_RATIO_XY = (11, 5)
-    BANNER_NAME_RATIO = 1.67  # .537
+    BANNER_NAME_RATIO = 1.80    # 1.67  # .537
 
     TEXT_FONT_PATH = ApiResourceBase.FONT_PATH + "Raleway-Regular.ttf"
     TEXT_FONT_SIZE_RATIO_XY = (25, 11)
