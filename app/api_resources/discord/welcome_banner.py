@@ -39,7 +39,13 @@ class WelcomeBanner(ApiResourceBase):
 
     FONT_PATH = ApiResourceBase.FONT_PATH + "KaushanScript-Regular.ttf"
     NAME_FONT_SIZE_RATIO_XY = (11, 5)
-    BANNER_NAME_RATIO = 1.80    # 1.67  # .537
+    BANNER_NAME_RATIO = 1.83    # 1.67  # .537
+
+    NAME_DISCRIMINATOR_PADDING = 1
+
+    DISCRIMINATOR_FRONT_PATH = ApiResourceBase.FONT_PATH + "AmaticSC-Bold.ttf"
+    DISCRIMINATOR_FRONT_SIZE_RATIO_XY = (NAME_FONT_SIZE_RATIO_XY[0] * 1.7, NAME_FONT_SIZE_RATIO_XY[1] * 1.7)
+    BANNER_DISCRIMINATOR_RATIO = 1.56
 
     TEXT_FONT_PATH = ApiResourceBase.FONT_PATH + "Raleway-Regular.ttf"
     TEXT_FONT_SIZE_RATIO_XY = (25, 11)
@@ -55,9 +61,15 @@ class WelcomeBanner(ApiResourceBase):
         draw = ImageDraw.Draw(base)
         name_font_size = get_relative_font_size(base.size, self.NAME_FONT_SIZE_RATIO_XY)
         name_font = ImageFont.truetype(self.FONT_PATH, name_font_size)
+        disc_font_size = get_relative_font_size(base.size, self.DISCRIMINATOR_FRONT_SIZE_RATIO_XY)
+        disc_font = ImageFont.truetype(self.DISCRIMINATOR_FRONT_PATH, disc_font_size)
         name_width, _ = draw.textsize(payload["name"], font=name_font)
-        name_xy = (int((base.size[0] - name_width) / 2), int(base.size[1] / self.BANNER_NAME_RATIO))
+        disc_width, _ = draw.textsize(payload["discriminator"], font=disc_font)
+        name_xy = (int((base.size[0] - (name_width + disc_width)) / 2), int(base.size[1] / self.BANNER_NAME_RATIO))
+        disc_x = name_xy[0] + name_width + self.NAME_DISCRIMINATOR_PADDING
+        disc_xy = (disc_x, int(base.size[1] / self.BANNER_DISCRIMINATOR_RATIO))
         draw.text(name_xy, payload["name"], fill=payload.get("font_color") or (255, 255, 255), font=name_font)
+        draw.text(disc_xy, payload["discriminator"], fill=payload.get("font_color") or (255, 255, 255), font=disc_font)
         text_font_size = get_relative_font_size(base.size, self.TEXT_FONT_SIZE_RATIO_XY)
         text_font = ImageFont.truetype(self.TEXT_FONT_PATH, text_font_size)
         text_width, _ = draw.textsize(payload["text"], font=text_font)
