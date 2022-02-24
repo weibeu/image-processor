@@ -20,7 +20,7 @@ class ImageFunctions(object):
             return
 
     def add_avatar_border(self, avatar, width=10, outline=None):
-        outline = self.get_color(outline)
+        outline = self.get_color(outline or "#ffffff")
         drawer = ImageDraw.Draw(avatar)
         drawer.ellipse((0, 0) + avatar.size, width=width, outline=outline)
         return avatar
