@@ -122,5 +122,5 @@ class WelcomeBanner(ApiResourceBase):
             return send_file(
                 banner_bytes,
                 mimetype=f"image/{_}",
-                attachment_filename=f"{self.BASE_FILENAME}.{_}"
+                download_name=f"{self.BASE_FILENAME}.{_}"
             )

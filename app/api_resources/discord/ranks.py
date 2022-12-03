@@ -111,4 +111,4 @@ class RankCard(ApiResourceBase):
         rank_card_bytes, _ = self._process(**payload)
         return send_file(
             rank_card_bytes, mimetype=f"image/{_}",
-            attachment_filename=f"rank_card.{_}")
+            download_name=f"rank_card.{_}")

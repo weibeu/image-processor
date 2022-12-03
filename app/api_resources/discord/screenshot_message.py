@@ -119,5 +119,5 @@ class SSMessage(ApiResourceBase):
         return send_file(
             ss_bytes,
             mimetype="image/png",
-            attachment_filename=self.SS_NAME
+            download_name=self.SS_NAME
         )

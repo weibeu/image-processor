@@ -51,5 +51,5 @@ class RIP(ApiResourceBase):
         return send_file(
             meme_bytes,
             mimetype="image/png",
-            attachment_filename=self.MEME_NAME
+            download_name=self.MEME_NAME
         )
