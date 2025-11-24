@@ -23,6 +23,14 @@ def get_relative_font_size(xy, ratio_xy):
     return min((font_size_x, font_size_y))
 
 
+def get_text_size(draw, text, font):
+    """Helper function to get text dimensions using textbbox (Pillow 10+)"""
+    bbox = draw.textbbox((0, 0), text, font=font)
+    width = bbox[2] - bbox[0]
+    height = bbox[3] - bbox[1]
+    return width, height
+
+
 class WelcomeBanner(ApiResourceBase):
 
     ROUTE = "banners/welcome/"
@@ -63,8 +71,8 @@ class WelcomeBanner(ApiResourceBase):
         name_font = ImageFont.truetype(self.FONT_PATH, name_font_size)
         disc_font_size = get_relative_font_size(base.size, self.DISCRIMINATOR_FRONT_SIZE_RATIO_XY)
         disc_font = ImageFont.truetype(self.DISCRIMINATOR_FRONT_PATH, disc_font_size)
-        name_width, _ = draw.textsize(payload["name"], font=name_font)
-        disc_width, _ = draw.textsize(payload["discriminator"], font=disc_font)
+        name_width, _ = get_text_size(draw, payload["name"], name_font)
+        disc_width, _ = get_text_size(draw, payload["discriminator"], disc_font)
         name_xy = (int((base.size[0] - (name_width + disc_width)) / 2), int(base.size[1] / self.BANNER_NAME_RATIO))
         disc_x = name_xy[0] + name_width + self.NAME_DISCRIMINATOR_PADDING
         disc_xy = (disc_x, int(base.size[1] / self.BANNER_DISCRIMINATOR_RATIO))
@@ -72,7 +80,7 @@ class WelcomeBanner(ApiResourceBase):
         draw.text(disc_xy, payload["discriminator"], fill=payload.get("font_color") or (255, 255, 255), font=disc_font)
         text_font_size = get_relative_font_size(base.size, self.TEXT_FONT_SIZE_RATIO_XY)
         text_font = ImageFont.truetype(self.TEXT_FONT_PATH, text_font_size)
-        text_width, _ = draw.textsize(payload["text"], font=text_font)
+        text_width, _ = get_text_size(draw, payload["text"], text_font)
         text_xy = (int((base.size[0] - text_width) / 2), int(base.size[1] / self.BANNER_TEXT_RATIO))
         draw.text(text_xy, payload["text"], fill=payload.get("font_color") or (255, 255, 255), font=text_font)
         return base
@@ -98,7 +106,7 @@ class WelcomeBanner(ApiResourceBase):
             banner.paste(avatar, avatar_xy, avatar)
             banner = add_banner_border(banner, border_width, outline=payload.get("border_color"))
             banner = self.write_text(banner, payload)
-            banner.thumbnail(self.DISCORD_BANNER_SIZE, Image.ANTIALIAS)
+            banner.thumbnail(self.DISCORD_BANNER_SIZE, Image.Resampling.LANCZOS)
             frames = banner
         else:
             for i, frame in enumerate(frames):
@@ -106,7 +114,7 @@ class WelcomeBanner(ApiResourceBase):
                 frame.paste(avatar, avatar_xy, avatar)
                 frame = add_banner_border(frame, border_width, outline=payload.get("border_color"))
                 frame = self.write_text(frame, payload)
-                frame.thumbnail(self.DISCORD_BANNER_SIZE, Image.ANTIALIAS)
+                frame.thumbnail(self.DISCORD_BANNER_SIZE, Image.Resampling.LANCZOS)
                 frames[i] = frame
 
         return self.to_bytes(frames)

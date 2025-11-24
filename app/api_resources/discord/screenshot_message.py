@@ -6,6 +6,14 @@ from flask import send_file, request, abort
 from PIL import Image, ImageDraw, ImageOps, ImageFont
 
 
+def get_text_size(draw, text, font):
+    """Helper function to get text dimensions using textbbox (Pillow 10+)"""
+    bbox = draw.textbbox((0, 0), text, font=font)
+    width = bbox[2] - bbox[0]
+    height = bbox[3] - bbox[1]
+    return width, height
+
+
 class SSMessage(ApiResourceBase):
 
     DISCORD_BASE_COLOR = (54, 57, 62)
@@ -64,7 +72,7 @@ class SSMessage(ApiResourceBase):
         name_font = ImageFont.truetype(self.NAME_FONT_PATH, self.NAME_FONT_SIZE)
         drawer.text(name_xy, name, fill=name_color, font=name_font)
 
-        _time_stamp_x = drawer.textsize(name, name_font)[0]
+        _time_stamp_x = get_text_size(drawer, name, name_font)[0]
         time_stamp_xy = (_time_stamp_x + name_xy[0] + 5, name_xy[1] + 4.4)
         time_stamp_font = ImageFont.truetype(self.FONT_PATH, self.TIME_STAMP_FONT_SIZE)
         drawer.text(time_stamp_xy, time_stamp, fill=self.TIME_STAMP_FONT_COLOR, font=time_stamp_font)
@@ -74,7 +82,7 @@ class SSMessage(ApiResourceBase):
         padding = self.FONT_PADDING[3]
         font = ImageFont.truetype(self.FONT_PATH, self.FONT_SIZE)
         for line in content:
-            w, h = drawer.textsize(line, font=font)
+            w, h = get_text_size(drawer, line, font)
             drawer.text((content_xy[0], content_y), line, font=font)
             content_y += h + padding
         if len(content) != 1:

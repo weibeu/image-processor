@@ -4,6 +4,14 @@ from flask import request, send_file, abort
 from PIL import Image, ImageDraw, ImageFont
 
 
+def get_text_size(draw, text, font):
+    """Helper function to get text dimensions using textbbox (Pillow 10+)"""
+    bbox = draw.textbbox((0, 0), text, font=font)
+    width = bbox[2] - bbox[0]
+    height = bbox[3] - bbox[1]
+    return width, height
+
+
 class RIP(ApiResourceBase):
 
     BASE_MEME_PATH = "app/api_resources/templates/misc/rip.png"
@@ -30,7 +38,7 @@ class RIP(ApiResourceBase):
 
         drawer = ImageDraw.Draw(base_meme)
         font = ImageFont.truetype(self.FONT_PATH, self.FONT_SIZE)
-        text_width, text_height = drawer.textsize(text, font)
+        text_width, text_height = get_text_size(drawer, text, font)
         text_x = (base_meme.size[0] - (text_width + self.TEXT_PADDING[0])) / 2
         text_y = base_meme.size[1] - (text_height + self.TEXT_PADDING[1])
         text_xy = (text_x, text_y)

@@ -11,6 +11,14 @@ def humanize_stats(value, start=1000):
     return str(value)
 
 
+def get_text_size(draw, text, font):
+    """Helper function to get text dimensions using textbbox (Pillow 10+)"""
+    bbox = draw.textbbox((0, 0), text, font=font)
+    width = bbox[2] - bbox[0]
+    height = bbox[3] - bbox[1]
+    return width, height
+
+
 class RankCard(ApiResourceBase):
 
     ROUTE = "profile/rank/"
@@ -63,7 +71,7 @@ class RankCard(ApiResourceBase):
         draw = ImageDraw.Draw(base)
         name_font = ImageFont.truetype(self.NAME_FONT_PATH, size=177)
         draw.text(self.NAME_XY, kwargs["name"], font=name_font)
-        discriminator_xy = draw.textsize(kwargs["name"], font=name_font)
+        discriminator_xy = get_text_size(draw, kwargs["name"], name_font)
         discriminator_xy = discriminator_xy[0] + self.NAME_XY[0] + 10, self.NAME_XY[1] + discriminator_xy[1] - 90
         discriminator_font = ImageFont.truetype(self.DISCRIMINATOR_FONT_PATH, size=70)
         draw.text(discriminator_xy, kwargs["discriminator"], font=discriminator_font)

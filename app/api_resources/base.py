@@ -58,33 +58,64 @@ class ApiResourceBase(ImageFunctions, Resource):
 
     MEDIA_MAX_SIZE = 4200000
 
+    # Browser-like headers to avoid bot detection
+    REQUEST_HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+
     @staticmethod
     def encode_url(url):
         return base64.urlsafe_b64encode(url.encode("ascii")).decode("ascii")
 
     @staticmethod
     def get_image_from_url(url: str, max_size=MEDIA_MAX_SIZE):
-        response = requests.get(url, stream=True)
+        response = requests.get(url, headers=ApiResourceBase.REQUEST_HEADERS, stream=True, timeout=10)
+        
+        # Check for HTTP errors
+        if response.status_code != 200:
+            raise requests.HTTPError(f"HTTP {response.status_code} for URL: {url}")
+        
+        image_content = b""
         for chunk in response.iter_content(chunk_size=max_size):
             if len(chunk) >= max_size:
-                raise OverflowError
-            image_bytes = BytesIO(chunk)
-            image_bytes.seek(0)
-            return image_bytes
+                raise OverflowError("Image size exceeds maximum allowed size")
+            image_content += chunk
+        
+        # Validate that we got content
+        if not image_content:
+            raise ValueError(f"Empty response from URL: {url}")
+        
+        return BytesIO(image_content)
 
     def get_cached_image_from_url(self, url: str, max_size=MEDIA_MAX_SIZE):
         file_path = self.IMAGE_CACHE_PATH + self.encode_url(url)
+        
+        # Try to read from cache
         try:
             with open(file_path, "rb") as file:
-                return BytesIO(file.read())
+                cached_content = file.read()
+                # Validate cached file is not empty
+                if cached_content:
+                    return BytesIO(cached_content)
+                else:
+                    # Delete empty cache file
+                    os.remove(file_path)
         except FileNotFoundError:
-            image_bytes = self.get_image_from_url(url, max_size)
-            try:
-                with open(file_path, "wb") as file:
-                    file.write(image_bytes.read())
-            except FileNotFoundError:
-                os.makedirs(self.IMAGE_CACHE_PATH)
-            return image_bytes
+            pass
+        
+        # Download the image
+        image_bytes = self.get_image_from_url(url, max_size)
+        image_content = image_bytes.read()
+        
+        # Ensure cache directory exists
+        os.makedirs(self.IMAGE_CACHE_PATH, exist_ok=True)
+        
+        # Write to cache
+        with open(file_path, "wb") as file:
+            file.write(image_content)
+        
+        # Return a new BytesIO with the content
+        return BytesIO(image_content)
 
     @abstractmethod
     def _process(self, **kwargs):
